@@ -1,348 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dondoca Semi Joias</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background-color: #fff; color: #333; }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dondoca Semi Joias</title>
+<style>
+  :root{
+    --primary:#c49a6c;
+    --accent:#f7f2ee;
+    --dark:#222;
+    --muted:#777;
+    --white:#fff;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Inter, Arial, sans-serif;margin:0;background:var(--accent);color:var(--dark);}
+  a{text-decoration:none;color:inherit}
 
-    header {
-      background-color: #f8f8f8;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 20px; position: sticky; top: 0; z-index: 1000;
-    }
-    header h1 { font-size: 1.5em; color: #b8860b; }
-    nav ul { display: flex; list-style: none; gap: 20px; }
-    nav a { text-decoration: none; color: #333; font-weight: 600; }
-    nav a:hover { color: #b8860b; }
-    .menu-toggle { display: none; font-size: 1.8em; cursor: pointer; }
+  /* ===== HEADER ===== */
+  header{
+    background:var(--white);
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+  .header-inner{
+    max-width:1200px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:12px 16px;
+  }
+  .brand{
+    text-align:center;
+  }
+  .brand h1{
+    font-size:28px;
+    color:var(--primary);
+    margin:4px 0 0 0;
+  }
+  .brand span{
+    font-size:13px;
+    color:var(--muted);
+  }
 
-    @media (max-width: 768px) {
-      nav ul { display: none; flex-direction: column; background: #fff; position: absolute; top: 60px; left: 0; width: 100%; border-top: 1px solid #ddd; }
-      nav ul.active { display: flex; }
-      .menu-toggle { display: block; }
-    }
+  nav{
+    margin-top:10px;
+  }
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:14px;
+    margin:0;
+    padding:0;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  nav a{
+    padding:8px 14px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.2s;
+  }
+  nav a:hover, nav a.active{
+    background:var(--primary);
+    color:#fff;
+  }
 
-    .carousel { position: relative; width: 100%; height: 500px; overflow: hidden; }
-    .carousel img { width: 100%; height: 500px; object-fit: cover; position: absolute; opacity: 0; transition: opacity 1s; }
-    .carousel img.active { opacity: 1; }
+  .header-actions{
+    position:absolute;
+    right:16px;
+    top:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
 
-    main { padding: 20px; }
-    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
-    .product { border: 1px solid #eee; border-radius: 10px; padding: 10px; text-align: center; transition: 0.3s; cursor: pointer; }
-    .product:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .product img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
-    .product h3 { font-size: 1em; margin: 10px 0; }
-    .product p { color: #b8860b; font-weight: bold; }
+  .btn{
+    border:0;
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+    font-weight:600;
+    box-shadow:0 2px 4px rgba(0,0,0,.08);
+  }
+  .btn.whats{background:#25d366;color:#fff;}
+  .btn.cart{background:var(--primary);color:#fff;}
 
-    .cart { position: fixed; top: 20px; right: 20px; background: #b8860b; color: #fff; padding: 10px 15px; border-radius: 8px; cursor: pointer; }
-    .whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: #fff; padding: 15px; border-radius: 50%; font-size: 1.5em; cursor: pointer; }
+  .badge{
+    background:#fff;
+    color:var(--primary);
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:999px;
+    margin-left:5px;
+  }
 
-    footer { background: #f8f8f8; text-align: center; padding: 30px 15px; margin-top: 40px; }
-    footer img { width: 200px; margin-bottom: 10px; }
-    footer p { font-size: 0.9em; color: #555; margin-top: 5px; }
-  </style>
+  /* ===== GRID ===== */
+  main{max-width:1200px;margin:20px auto;padding:0 16px;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+  }
+  .card{
+    background:var(--white);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+  }
+  .card img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+    cursor:pointer;
+    transition:transform .2s;
+  }
+  .card img:hover{transform:scale(1.04);}
+  .card .body{padding:12px;}
+  .title{font-weight:700;margin-bottom:6px;}
+  .price{color:var(--primary);font-weight:800;}
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:var(--white);
+    padding:34px 16px;
+    margin-top:28px;
+    border-top:1px solid #eee;
+  }
+  .footer-inner{
+    max-width:1200px;
+    margin:0 auto;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+    text-align:center;
+  }
+  .footer-banner{
+    width:100%;
+    max-width:800px;
+    border-radius:12px;
+    margin-bottom:20px;
+  }
+  .footer-bottom{text-align:center;color:var(--muted);margin-top:18px;}
+
+  @media (max-width:600px){
+    .header-actions{position:static;justify-content:center;margin-top:8px;}
+    .card img{height:220px;}
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>Dondoca Semi Joias</h1>
-    <div class="menu-toggle">☰</div>
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <h1>Dondoca Semi Joias</h1>
+      <span>Semi Joias com brilho e elegância</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn whats" id="whatsBtn">💬 WhatsApp</button>
+      <button class="btn cart" id="openCartBtn">🛒<span id="cartCount" class="badge">0</span></button>
+    </div>
     <nav>
       <ul>
-        <li><a href="#" data-category="aneis">Anéis</a></li>
-        <li><a href="#" data-category="brincos">Brincos</a></li>
-        <li><a href="#" data-category="pulseiras">Pulseiras</a></li>
-        <li><a href="#" data-category="correntes">Correntes</a></li>
+        <li><a href="#" class="active" data-cat="aneis">Anéis</a></li>
+        <li><a href="#" data-cat="brincos">Brincos</a></li>
+        <li><a href="#" data-cat="pulseiras">Pulseiras</a></li>
+        <li><a href="#" data-cat="colares">Colares</a></li>
+        <li><a href="#" data-cat="correntes">Correntes</a></li>
       </ul>
     </nav>
-    <div class="cart">🛒 Carrinho</div>
-  </header>
-
-  <div class="carousel">
-    <img src="imagens/banner1.jpg" class="active">
-    <img src="imagens/banner2.jpg">
-    <img src="imagens/banner3.jpg">
-    <img src="imagens/banner4.jpg">
-    <img src="imagens/banner5.jpg">
-    <img src="imagens/banner6.jpg">
-    <img src="imagens/banner7.jpg">
   </div>
+</header>
 
-  <main>
-    <div class="products" id="products"></div>
-  </main>
+<main>
+  <section id="productsGrid" class="grid"></section>
+</main>
 
-  <a href="https://wa.me/55SEUNUMERO" target="_blank" class="whatsapp">💬</a>
+<footer>
+  <div class="footer-inner">
+    <img class="footer-banner" src="https://via.placeholder.com/1200x300?text=Banner+Rodape" alt="Rodapé">
+    <div>
+      <h4>Sobre a Dondoca</h4>
+      <p>Dondoca Semi Joias oferece peças selecionadas e sofisticadas para todas as ocasiões.</p>
+      <p><strong>Email:</strong> contato@dondoca.com.br</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 Dondoca Semi Joias — Todos os direitos reservados</div>
+</footer>
 
-  <footer>
-    <img src="imagens/footer.jpg" alt="Sobre a loja">
-    <p>Dondoca Semi Joias — elegância e brilho em cada detalhe. 💎</p>
-    <p>Email: contato@dondoca.com.br</p>
-    <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></p>
-  </footer>
+<script>
+const WHATSAPP_NUMBER = "5599999999999";
 
-  <script>
-    // MENU RESPONSIVO
-    document.querySelector('.menu-toggle').addEventListener('click', () => {
-      document.querySelector('nav ul').classList.toggle('active');
-    });
+const products = [
+  /* === ANÉIS === */
+  {id:"anel1",category:"aneis",title:"Anel Coração Dourado",price:139.90,images:["imagens/anel1a.jpg","imagens/anel1b.jpg","imagens/anel1c.jpg"],desc:"Anel folheado a ouro 18k com zircônias cravejadas."},
+  {id:"anel2",category:"aneis",title:"Anel Luxo Zircônia",price:199.90,images:["imagens/anel2a.jpg"],desc:"Anel delicado com pedra central e banho em ouro."},
+  {id:"anel3",category:"aneis",title:"Anel Duplo",price:149.90,images:["imagens/anel3a.jpg"],desc:"Modelo duplo moderno e elegante."},
 
-    // CARROSSEL
-    const slides = document.querySelectorAll('.carousel img');
-    let index = 0;
-    setInterval(() => {
-      slides[index].classList.remove('active');
-      index = (index + 1) % slides.length;
-      slides[index].classList.add('active');
-    }, 5000);
+  /* === BRINCOS === */
+  {id:"brinco1",category:"brincos",title:"Brinco Gota Cristal",price:99.90,images:["imagens/brinco1a.jpg"],desc:"Brinco folheado com cristal lapidado."},
+  {id:"brinco2",category:"brincos",title:"Brinco Argola Fina",price:89.90,images:["imagens/brinco2a.jpg"],desc:"Argola delicada folheada a ouro 18k."},
 
-    // PRODUTOS MANUAIS
-    const products = [
-      // ==== ANÉIS ====
-      { id: "anel1", category: "aneis", title: "Anel Coração Dourado", price: 139.90, images: ["imagens/anel1a.jpg","imagens/anel1b.jpg","imagens/anel1c.jpg","imagens/anel1d.jpg"], desc: "Anel folheado a ouro 18k com zircônias cravejadas." },
-      { id: "anel2", category: "aneis", title: "Anel Solitário Luxo", price: 159.90, images: ["imagens/anel2a.jpg","imagens/anel2b.jpg","imagens/anel2c.jpg","imagens/anel2d.jpg"], desc: "Design elegante e moderno." },
-      { id: "anel3", category: "aneis", title: "Anel Fino com Zircônias", price: 129.90, images: ["imagens/anel3a.jpg","imagens/anel3b.jpg","imagens/anel3c.jpg","imagens/anel3d.jpg"], desc: "Delicado e sofisticado." },
-      { id: "anel4", category: "aneis", title: "Anel Borboleta", price: 149.90, images: ["imagens/anel4a.jpg","imagens/anel4b.jpg","imagens/anel4c.jpg","imagens/anel4d.jpg"], desc: "Peça única e charmosa." },
-      { id: "anel5", category: "aneis", title: "Anel Duplo Cravejado", price: 179.90, images: ["imagens/anel5a.jpg","imagens/anel5b.jpg","imagens/anel5c.jpg","imagens/anel5d.jpg"], desc: "Brilho em dobro." },
-      { id: "anel6", category: "aneis", title: "Anel Flor Ouro 18k", price: 189.90, images: ["imagens/anel6a.jpg","imagens/anel6b.jpg","imagens/anel6c.jpg","imagens/anel6d.jpg"], desc: "Detalhes encantadores." },
-      { id: "anel7", category: "aneis", title: "Anel Pérola", price: 139.90, images: ["imagens/anel7a.jpg","imagens/anel7b.jpg","imagens/anel7c.jpg","imagens/anel7d.jpg"], desc: "Beleza clássica e atemporal." },
-      { id: "anel8", category: "aneis", title: "Anel Retangular", price: 149.90, images: ["imagens/anel8a.jpg","imagens/anel8b.jpg","imagens/anel8c.jpg","imagens/anel8d.jpg"], desc: "Design geométrico." },
-      { id: "anel9", category: "aneis", title: "Anel Gota Cristal", price: 169.90, images: ["imagens/anel9a.jpg","imagens/anel9b.jpg","imagens/anel9c.jpg","imagens/anel9d.jpg"], desc: "Perfeito para todas ocasiões." },
-      { id: "anel10", category: "aneis", title: "Anel Luxo Real", price: 199.90, images: ["imagens/anel10a.jpg","imagens/anel10b.jpg","imagens/anel10c.jpg","imagens/anel10d.jpg"], desc: "Elegância em cada detalhe." },
+  /* === PULSEIRAS === */
+  {id:"pulseira1",category:"pulseiras",title:"Pulseira Riviera",price:179.90,images:["imagens/pulseira1a.jpg"],desc:"Pulseira Riviera folheada com zircônias claras."},
+  {id:"pulseira2",category:"pulseiras",title:"Pulseira Corações",price:129.90,images:["imagens/pulseira2a.jpg"],desc:"Pulseira romântica folheada em ouro."},
 
-      // ==== BRINCOS ====
-      { id: "brinco1", category: "brincos", title: "Brinco Argola Dourada", price: 119.90, images: ["imagens/brinco1a.jpg","imagens/brinco1b.jpg","imagens/brinco1c.jpg","imagens/brinco1d.jpg"], desc: "Clássico e versátil." },
-      { id: "brinco2", category: "brincos", title: "Brinco Gota Cristal", price: 139.90, images: ["imagens/brinco2a.jpg","imagens/brinco2b.jpg","imagens/brinco2c.jpg","imagens/brinco2d.jpg"], desc: "Beleza delicada." },
-      { id: "brinco3", category: "brincos", title: "Brinco Coração", price: 99.90, images: ["imagens/brinco3a.jpg","imagens/brinco3b.jpg","imagens/brinco3c.jpg","imagens/brinco3d.jpg"], desc: "Romântico e moderno." },
-      { id: "brinco4", category: "brincos", title: "Brinco Ponto de Luz", price: 89.90, images: ["imagens/brinco4a.jpg","imagens/brinco4b.jpg","imagens/brinco4c.jpg","imagens/brinco4d.jpg"], desc: "Simples e elegante." },
-      { id: "brinco5", category: "brincos", title: "Brinco Pérola Clássico", price: 129.90, images: ["imagens/brinco5a.jpg","imagens/brinco5b.jpg","imagens/brinco5c.jpg","imagens/brinco5d.jpg"], desc: "Perfeito para o dia a dia." },
-      { id: "brinco6", category: "brincos", title: "Brinco Luxo Festa", price: 189.90, images: ["imagens/brinco6a.jpg","imagens/brinco6b.jpg","imagens/brinco6c.jpg","imagens/brinco6d.jpg"], desc: "Destaque garantido." },
-      { id: "brinco7", category: "brincos", title: "Brinco Zircônia Colorida", price: 149.90, images: ["imagens/brinco7a.jpg","imagens/brinco7b.jpg","imagens/brinco7c.jpg","imagens/brinco7d.jpg"], desc: "Cores e brilho." },
-      { id: "brinco8", category: "brincos", title: "Brinco Gota Dourado", price: 139.90, images: ["imagens/brinco8a.jpg","imagens/brinco8b.jpg","imagens/brinco8c.jpg","imagens/brinco8d.jpg"], desc: "Estilo e elegância." },
-      { id: "brinco9", category: "brincos", title: "Brinco Estrela", price: 119.90, images: ["imagens/brinco9a.jpg","imagens/brinco9b.jpg","imagens/brinco9c.jpg","imagens/brinco9d.jpg"], desc: "Delicado e charmoso." },
-      { id: "brinco10", category: "brincos", title: "Brinco Luxo Prata", price: 199.90, images: ["imagens/brinco10a.jpg","imagens/brinco10b.jpg","imagens/brinco10c.jpg","imagens/brinco10d.jpg"], desc: "Elegância atemporal." },
+  /* === COLARES === */
+  {id:"colar1",category:"colares",title:"Colar Ponto de Luz",price:159.90,images:["imagens/colar1a.jpg"],desc:"Colar delicado com pingente de zircônia."},
+  {id:"colar2",category:"colares",title:"Colar Duplo Camadas",price:189.90,images:["imagens/colar2a.jpg"],desc:"Colar moderno com duas camadas folheadas."},
 
-      // ==== PULSEIRAS ====
-      { id: "pulseira1", category: "pulseiras", title: "Pulseira Coração", price: 139.90, images: ["imagens/pulseira1a.jpg","imagens/pulseira1b.jpg","imagens/pulseira1c.jpg","imagens/pulseira1d.jpg"], desc: "Delicada e elegante." },
-      { id: "pulseira2", category: "pulseiras", title: "Pulseira Bolinhas", price: 119.90, images: ["imagens/pulseira2a.jpg","imagens/pulseira2b.jpg","imagens/pulseira2c.jpg","imagens/pulseira2d.jpg"], desc: "Sutil e sofisticada." },
-      { id: "pulseira3", category: "pulseiras", title: "Pulseira Zircônias", price: 159.90, images: ["imagens/pulseira3a.jpg","imagens/pulseira3b.jpg","imagens/pulseira3c.jpg","imagens/pulseira3d.jpg"], desc: "Brilho intenso." },
-      { id: "pulseira4", category: "pulseiras", title: "Pulseira Pingente", price: 129.90, images: ["imagens/pulseira4a.jpg","imagens/pulseira4b.jpg","imagens/pulseira4c.jpg","imagens/pulseira4d.jpg"], desc: "Encantadora." },
-      { id: "pulseira5", category: "pulseiras", title: "Pulseira Corrente Dourada", price: 149.90, images: ["imagens/pulseira5a.jpg","imagens/pulseira5b.jpg","imagens/pulseira5c.jpg","imagens/pulseira5d.jpg"], desc: "Estilo e modernidade." },
-      { id: "pulseira6", category: "pulseiras", title: "Pulseira Luxo Festa", price: 179.90, images: ["imagens/pulseira6a.jpg","imagens/pulseira6b.jpg","imagens/pulseira6c.jpg","imagens/pulseira6d.jpg"], desc: "Destaque absoluto." },
-      { id: "pulseira7", category: "pulseiras", title: "Pulseira Dupla", price: 139.90, images: ["imagens/pulseira7a.jpg","imagens/pulseira7b.jpg","imagens/pulseira7c.jpg","imagens/pulseira7d.jpg"], desc: "Beleza em dobro." },
-      { id: "pulseira8", category: "pulseiras", title: "Pulseira Pérolas", price: 129.90, images: ["imagens/pulseira8a.jpg","imagens/pulseira8b.jpg","imagens/pulseira8c.jpg","imagens/pulseira8d.jpg"], desc: "Charme clássico." },
-      { id: "pulseira9", category: "pulseiras", title: "Pulseira Fina", price: 99.90, images: ["imagens/pulseira9a.jpg","imagens/pulseira9b.jpg","imagens/pulseira9c.jpg","imagens/pulseira9d.jpg"], desc: "Simples e linda." },
-      { id: "pulseira10", category: "pulseiras", title: "Pulseira Elos Grandes", price: 159.90, images: ["imagens/pulseira10a.jpg","imagens/pulseira10b.jpg","imagens/pulseira10c.jpg","imagens/pulseira10d.jpg"], desc: "Peça moderna e marcante." },
+  /* === CORRENTES === */
+  {id:"corrente1",category:"correntes",title:"Corrente Masculina 3mm",price:219.90,images:["imagens/corrente1a.jpg"],desc:"Corrente de aço inoxidável com fecho seguro."},
+  {id:"corrente2",category:"correntes",title:"Corrente Feminina Fina",price:159.90,images:["imagens/corrente2a.jpg"],desc:"Corrente delicada e sofisticada para o dia a dia."}
+];
 
-      // ==== CORRENTES ====
-      { id: "corrente1", category: "correntes", title: "Corrente Dourada Fina", price: 149.90, images: ["imagens/corrente1a.jpg","imagens/corrente1b.jpg","imagens/corrente1c.jpg","imagens/corrente1d.jpg"], desc: "Elegante e discreta." },
-      { id: "corrente2", category: "correntes", title: "Corrente Masculina Elos", price: 179.90, images: ["imagens/corrente2a.jpg","imagens/corrente2b.jpg","imagens/corrente2c.jpg","imagens/corrente2d.jpg"], desc: "Estilo e presença." },
-      { id: "corrente3", category: "correntes", title: "Corrente com Pingente", price: 159.90, images: ["imagens/corrente3a.jpg","imagens/corrente3b.jpg","imagens/corrente3c.jpg","imagens/corrente3d.jpg"], desc: "Detalhe especial." },
-      { id: "corrente4", category: "correntes", title: "Corrente Dupla", price: 189.90, images: ["imagens/corrente4a.jpg","imagens/corrente4b.jpg","imagens/corrente4c.jpg","imagens/corrente4d.jpg"], desc: "Diferenciada e moderna." },
-      { id: "corrente5", category: "correntes", title: "Corrente Pérolas", price: 139.90, images: ["imagens/corrente5a.jpg","imagens/corrente5b.jpg","imagens/corrente5c.jpg","imagens/corrente5d.jpg"], desc: "Toque de delicadeza." },
-      { id: "corrente6", category: "correntes", title: "Corrente Choker", price: 119.90, images: ["imagens/corrente6a.jpg","imagens/corrente6b.jpg","imagens/corrente6c.jpg","imagens/corrente6d.jpg"], desc: "Tendência do momento." },
-      { id: "corrente7", category: "correntes", title: "Corrente Elos Médios", price: 159.90, images: ["imagens/corrente7a.jpg","imagens/corrente7b.jpg","imagens/corrente7c.jpg","imagens/corrente7d.jpg"], desc: "Ideal para qualquer look." },
-      { id: "corrente8", category: "correntes", title: "Corrente Fina Cravejada", price: 199.90, images: ["imagens/corrente8a.jpg","imagens/corrente8b.jpg","imagens/corrente8c.jpg","imagens/corrente8d.jpg"], desc: "Luxo e brilho." },
-      { id: "corrente9", category: "correntes", title: "Corrente Ouro Rosé", price: 169.90, images: ["imagens/corrente9a.jpg","imagens/corrente9b.jpg","imagens/corrente9c.jpg","imagens/corrente9d.jpg"], desc: "Diferente e delicada." },
-      { id: "corrente10", category: "correntes", title: "Corrente Luxo Festa", price: 229.90, images: ["imagens/corrente10a.jpg","imagens/corrente10b.jpg","imagens/corrente10c.jpg","imagens/corrente10d.jpg"], desc: "Para momentos especiais." },
-    ];
+let activeCategory = 'aneis';
+let cart = [];
 
-    const container = document.getElementById("products");
-    const renderProducts = (category = "aneis") => {
-      container.innerHTML = "";
-      const filtered = products.filter(p => p.category === category);
-      filtered.forEach(p => {
-        const div = document.createElement("div");
-        div.classList.add("product");
-        div.innerHTML = `<img src="${p.images[0]}" alt="${p.title}"><h3>${p.title}</h3><p>R$ ${p.price.toFixed(2)}</p>`;
-        container.appendChild(div);
-      });
-    };
-    renderProducts();
+const grid = document.getElementById('productsGrid');
+const fmt = v => 'R$ ' + v.toFixed(2).replace('.',',');
 
-    document.querySelectorAll("nav a").forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        renderProducts(e.target.dataset.category);
-      });
-    });
-  </script>
+function render(){
+  grid.innerHTML='';
+  products.filter(p=>p.category===activeCategory).forEach(p=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`
+      <img src="${p.images[0]||'https://via.placeholder.com/400'}" alt="${p.title}">
+      <div class="body">
+        <div class="title">${p.title}</div>
+        <div class="price">${fmt(p.price)}</div>
+        <button class="btn cart" onclick="addToCart('${p.id}')">Adicionar</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  const item=cart.find(x=>x.id===id);
+  if(item) item.qty++; else cart.push({id:p.id,title:p.title,price:p.price,qty:1});
+  updateCart();
+}
+function updateCart(){
+  const total=cart.reduce((t,i)=>t+i.qty,0);
+  document.getElementById('cartCount').textContent=total;
+}
+document.querySelectorAll('nav a').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
+    a.classList.add('active');
+    activeCategory=a.dataset.cat;
+    render();
+  });
+});
+document.getElementById('whatsBtn').addEventListener('click',()=>{
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}`,'_blank');
+});
+document.getElementById('openCartBtn').addEventListener('click',()=>{
+  if(cart.length===0) return alert('Carrinho vazio!');
+  const msg=cart.map(i=>`${i.qty}x ${i.title} - ${fmt(i.price)}`).join('%0A');
+  const total=fmt(cart.reduce((s,i)=>s+i.qty*i.price,0));
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Olá!%20Meu%20pedido:%0A${msg}%0ATotal:%20${total}`,'_blank');
+});
+
+render();
+</script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dondoca Semi Joias</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background-color: #fff; color: #333; }
 
-    header {
-      background-color: #f8f8f8;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 20px; position: sticky; top: 0; z-index: 1000;
-    }
-    header h1 { font-size: 1.5em; color: #b8860b; }
-    nav ul { display: flex; list-style: none; gap: 20px; }
-    nav a { text-decoration: none; color: #333; font-weight: 600; }
-    nav a:hover { color: #b8860b; }
-    .menu-toggle { display: none; font-size: 1.8em; cursor: pointer; }
-
-    @media (max-width: 768px) {
-      nav ul { display: none; flex-direction: column; background: #fff; position: absolute; top: 60px; left: 0; width: 100%; border-top: 1px solid #ddd; }
-      nav ul.active { display: flex; }
-      .menu-toggle { display: block; }
-    }
-
-    .carousel { position: relative; width: 100%; height: 500px; overflow: hidden; }
-    .carousel img { width: 100%; height: 500px; object-fit: cover; position: absolute; opacity: 0; transition: opacity 1s; }
-    .carousel img.active { opacity: 1; }
-
-    main { padding: 20px; }
-    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
-    .product { border: 1px solid #eee; border-radius: 10px; padding: 10px; text-align: center; transition: 0.3s; cursor: pointer; }
-    .product:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .product img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
-    .product h3 { font-size: 1em; margin: 10px 0; }
-    .product p { color: #b8860b; font-weight: bold; }
-
-    .cart { position: fixed; top: 20px; right: 20px; background: #b8860b; color: #fff; padding: 10px 15px; border-radius: 8px; cursor: pointer; }
-    .whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: #fff; padding: 15px; border-radius: 50%; font-size: 1.5em; cursor: pointer; }
-
-    footer { background: #f8f8f8; text-align: center; padding: 30px 15px; margin-top: 40px; }
-    footer img { width: 200px; margin-bottom: 10px; }
-    footer p { font-size: 0.9em; color: #555; margin-top: 5px; }
-  </style>
-</head>
-<body>
-
-  <header>
-    <h1>Dondoca Semi Joias</h1>
-    <div class="menu-toggle">☰</div>
-    <nav>
-      <ul>
-        <li><a href="#" data-category="aneis">Anéis</a></li>
-        <li><a href="#" data-category="brincos">Brincos</a></li>
-        <li><a href="#" data-category="pulseiras">Pulseiras</a></li>
-        <li><a href="#" data-category="correntes">Correntes</a></li>
-      </ul>
-    </nav>
-    <div class="cart">🛒 Carrinho</div>
-  </header>
-
-  <div class="carousel">
-    <img src="imagens/banner1.jpg" class="active">
-    <img src="imagens/banner2.jpg">
-    <img src="imagens/banner3.jpg">
-    <img src="imagens/banner4.jpg">
-    <img src="imagens/banner5.jpg">
-    <img src="imagens/banner6.jpg">
-    <img src="imagens/banner7.jpg">
-  </div>
-
-  <main>
-    <div class="products" id="products"></div>
-  </main>
-
-  <a href="https://wa.me/55SEUNUMERO" target="_blank" class="whatsapp">💬</a>
-
-  <footer>
-    <img src="imagens/footer.jpg" alt="Sobre a loja">
-    <p>Dondoca Semi Joias — elegância e brilho em cada detalhe. 💎</p>
-    <p>Email: contato@dondoca.com.br</p>
-    <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></p>
-  </footer>
-
-  <script>
-    // MENU RESPONSIVO
-    document.querySelector('.menu-toggle').addEventListener('click', () => {
-      document.querySelector('nav ul').classList.toggle('active');
-    });
-
-    // CARROSSEL
-    const slides = document.querySelectorAll('.carousel img');
-    let index = 0;
-    setInterval(() => {
-      slides[index].classList.remove('active');
-      index = (index + 1) % slides.length;
-      slides[index].classList.add('active');
-    }, 5000);
-
-    // PRODUTOS MANUAIS
-    const products = [
-      // ==== ANÉIS ====
-      { id: "anel1", category: "aneis", title: "Anel Coração Dourado", price: 139.90, images: ["imagens/anel1a.jpg","imagens/anel1b.jpg","imagens/anel1c.jpg","imagens/anel1d.jpg"], desc: "Anel folheado a ouro 18k com zircônias cravejadas." },
-      { id: "anel2", category: "aneis", title: "Anel Solitário Luxo", price: 159.90, images: ["imagens/anel2a.jpg","imagens/anel2b.jpg","imagens/anel2c.jpg","imagens/anel2d.jpg"], desc: "Design elegante e moderno." },
-      { id: "anel3", category: "aneis", title: "Anel Fino com Zircônias", price: 129.90, images: ["imagens/anel3a.jpg","imagens/anel3b.jpg","imagens/anel3c.jpg","imagens/anel3d.jpg"], desc: "Delicado e sofisticado." },
-      { id: "anel4", category: "aneis", title: "Anel Borboleta", price: 149.90, images: ["imagens/anel4a.jpg","imagens/anel4b.jpg","imagens/anel4c.jpg","imagens/anel4d.jpg"], desc: "Peça única e charmosa." },
-      { id: "anel5", category: "aneis", title: "Anel Duplo Cravejado", price: 179.90, images: ["imagens/anel5a.jpg","imagens/anel5b.jpg","imagens/anel5c.jpg","imagens/anel5d.jpg"], desc: "Brilho em dobro." },
-      { id: "anel6", category: "aneis", title: "Anel Flor Ouro 18k", price: 189.90, images: ["imagens/anel6a.jpg","imagens/anel6b.jpg","imagens/anel6c.jpg","imagens/anel6d.jpg"], desc: "Detalhes encantadores." },
-      { id: "anel7", category: "aneis", title: "Anel Pérola", price: 139.90, images: ["imagens/anel7a.jpg","imagens/anel7b.jpg","imagens/anel7c.jpg","imagens/anel7d.jpg"], desc: "Beleza clássica e atemporal." },
-      { id: "anel8", category: "aneis", title: "Anel Retangular", price: 149.90, images: ["imagens/anel8a.jpg","imagens/anel8b.jpg","imagens/anel8c.jpg","imagens/anel8d.jpg"], desc: "Design geométrico." },
-      { id: "anel9", category: "aneis", title: "Anel Gota Cristal", price: 169.90, images: ["imagens/anel9a.jpg","imagens/anel9b.jpg","imagens/anel9c.jpg","imagens/anel9d.jpg"], desc: "Perfeito para todas ocasiões." },
-      { id: "anel10", category: "aneis", title: "Anel Luxo Real", price: 199.90, images: ["imagens/anel10a.jpg","imagens/anel10b.jpg","imagens/anel10c.jpg","imagens/anel10d.jpg"], desc: "Elegância em cada detalhe." },
-
-      // ==== BRINCOS ====
-      { id: "brinco1", category: "brincos", title: "Brinco Argola Dourada", price: 119.90, images: ["imagens/brinco1a.jpg","imagens/brinco1b.jpg","imagens/brinco1c.jpg","imagens/brinco1d.jpg"], desc: "Clássico e versátil." },
-      { id: "brinco2", category: "brincos", title: "Brinco Gota Cristal", price: 139.90, images: ["imagens/brinco2a.jpg","imagens/brinco2b.jpg","imagens/brinco2c.jpg","imagens/brinco2d.jpg"], desc: "Beleza delicada." },
-      { id: "brinco3", category: "brincos", title: "Brinco Coração", price: 99.90, images: ["imagens/brinco3a.jpg","imagens/brinco3b.jpg","imagens/brinco3c.jpg","imagens/brinco3d.jpg"], desc: "Romântico e moderno." },
-      { id: "brinco4", category: "brincos", title: "Brinco Ponto de Luz", price: 89.90, images: ["imagens/brinco4a.jpg","imagens/brinco4b.jpg","imagens/brinco4c.jpg","imagens/brinco4d.jpg"], desc: "Simples e elegante." },
-      { id: "brinco5", category: "brincos", title: "Brinco Pérola Clássico", price: 129.90, images: ["imagens/brinco5a.jpg","imagens/brinco5b.jpg","imagens/brinco5c.jpg","imagens/brinco5d.jpg"], desc: "Perfeito para o dia a dia." },
-      { id: "brinco6", category: "brincos", title: "Brinco Luxo Festa", price: 189.90, images: ["imagens/brinco6a.jpg","imagens/brinco6b.jpg","imagens/brinco6c.jpg","imagens/brinco6d.jpg"], desc: "Destaque garantido." },
-      { id: "brinco7", category: "brincos", title: "Brinco Zircônia Colorida", price: 149.90, images: ["imagens/brinco7a.jpg","imagens/brinco7b.jpg","imagens/brinco7c.jpg","imagens/brinco7d.jpg"], desc: "Cores e brilho." },
-      { id: "brinco8", category: "brincos", title: "Brinco Gota Dourado", price: 139.90, images: ["imagens/brinco8a.jpg","imagens/brinco8b.jpg","imagens/brinco8c.jpg","imagens/brinco8d.jpg"], desc: "Estilo e elegância." },
-      { id: "brinco9", category: "brincos", title: "Brinco Estrela", price: 119.90, images: ["imagens/brinco9a.jpg","imagens/brinco9b.jpg","imagens/brinco9c.jpg","imagens/brinco9d.jpg"], desc: "Delicado e charmoso." },
-      { id: "brinco10", category: "brincos", title: "Brinco Luxo Prata", price: 199.90, images: ["imagens/brinco10a.jpg","imagens/brinco10b.jpg","imagens/brinco10c.jpg","imagens/brinco10d.jpg"], desc: "Elegância atemporal." },
-
-      // ==== PULSEIRAS ====
-      { id: "pulseira1", category: "pulseiras", title: "Pulseira Coração", price: 139.90, images: ["imagens/pulseira1a.jpg","imagens/pulseira1b.jpg","imagens/pulseira1c.jpg","imagens/pulseira1d.jpg"], desc: "Delicada e elegante." },
-      { id: "pulseira2", category: "pulseiras", title: "Pulseira Bolinhas", price: 119.90, images: ["imagens/pulseira2a.jpg","imagens/pulseira2b.jpg","imagens/pulseira2c.jpg","imagens/pulseira2d.jpg"], desc: "Sutil e sofisticada." },
-      { id: "pulseira3", category: "pulseiras", title: "Pulseira Zircônias", price: 159.90, images: ["imagens/pulseira3a.jpg","imagens/pulseira3b.jpg","imagens/pulseira3c.jpg","imagens/pulseira3d.jpg"], desc: "Brilho intenso." },
-      { id: "pulseira4", category: "pulseiras", title: "Pulseira Pingente", price: 129.90, images: ["imagens/pulseira4a.jpg","imagens/pulseira4b.jpg","imagens/pulseira4c.jpg","imagens/pulseira4d.jpg"], desc: "Encantadora." },
-      { id: "pulseira5", category: "pulseiras", title: "Pulseira Corrente Dourada", price: 149.90, images: ["imagens/pulseira5a.jpg","imagens/pulseira5b.jpg","imagens/pulseira5c.jpg","imagens/pulseira5d.jpg"], desc: "Estilo e modernidade." },
-      { id: "pulseira6", category: "pulseiras", title: "Pulseira Luxo Festa", price: 179.90, images: ["imagens/pulseira6a.jpg","imagens/pulseira6b.jpg","imagens/pulseira6c.jpg","imagens/pulseira6d.jpg"], desc: "Destaque absoluto." },
-      { id: "pulseira7", category: "pulseiras", title: "Pulseira Dupla", price: 139.90, images: ["imagens/pulseira7a.jpg","imagens/pulseira7b.jpg","imagens/pulseira7c.jpg","imagens/pulseira7d.jpg"], desc: "Beleza em dobro." },
-      { id: "pulseira8", category: "pulseiras", title: "Pulseira Pérolas", price: 129.90, images: ["imagens/pulseira8a.jpg","imagens/pulseira8b.jpg","imagens/pulseira8c.jpg","imagens/pulseira8d.jpg"], desc: "Charme clássico." },
-      { id: "pulseira9", category: "pulseiras", title: "Pulseira Fina", price: 99.90, images: ["imagens/pulseira9a.jpg","imagens/pulseira9b.jpg","imagens/pulseira9c.jpg","imagens/pulseira9d.jpg"], desc: "Simples e linda." },
-      { id: "pulseira10", category: "pulseiras", title: "Pulseira Elos Grandes", price: 159.90, images: ["imagens/pulseira10a.jpg","imagens/pulseira10b.jpg","imagens/pulseira10c.jpg","imagens/pulseira10d.jpg"], desc: "Peça moderna e marcante." },
-
-      // ==== CORRENTES ====
-      { id: "corrente1", category: "correntes", title: "Corrente Dourada Fina", price: 149.90, images: ["imagens/corrente1a.jpg","imagens/corrente1b.jpg","imagens/corrente1c.jpg","imagens/corrente1d.jpg"], desc: "Elegante e discreta." },
-      { id: "corrente2", category: "correntes", title: "Corrente Masculina Elos", price: 179.90, images: ["imagens/corrente2a.jpg","imagens/corrente2b.jpg","imagens/corrente2c.jpg","imagens/corrente2d.jpg"], desc: "Estilo e presença." },
-      { id: "corrente3", category: "correntes", title: "Corrente com Pingente", price: 159.90, images: ["imagens/corrente3a.jpg","imagens/corrente3b.jpg","imagens/corrente3c.jpg","imagens/corrente3d.jpg"], desc: "Detalhe especial." },
-      { id: "corrente4", category: "correntes", title: "Corrente Dupla", price: 189.90, images: ["imagens/corrente4a.jpg","imagens/corrente4b.jpg","imagens/corrente4c.jpg","imagens/corrente4d.jpg"], desc: "Diferenciada e moderna." },
-      { id: "corrente5", category: "correntes", title: "Corrente Pérolas", price: 139.90, images: ["imagens/corrente5a.jpg","imagens/corrente5b.jpg","imagens/corrente5c.jpg","imagens/corrente5d.jpg"], desc: "Toque de delicadeza." },
-      { id: "corrente6", category: "correntes", title: "Corrente Choker", price: 119.90, images: ["imagens/corrente6a.jpg","imagens/corrente6b.jpg","imagens/corrente6c.jpg","imagens/corrente6d.jpg"], desc: "Tendência do momento." },
-      { id: "corrente7", category: "correntes", title: "Corrente Elos Médios", price: 159.90, images: ["imagens/corrente7a.jpg","imagens/corrente7b.jpg","imagens/corrente7c.jpg","imagens/corrente7d.jpg"], desc: "Ideal para qualquer look." },
-      { id: "corrente8", category: "correntes", title: "Corrente Fina Cravejada", price: 199.90, images: ["imagens/corrente8a.jpg","imagens/corrente8b.jpg","imagens/corrente8c.jpg","imagens/corrente8d.jpg"], desc: "Luxo e brilho." },
-      { id: "corrente9", category: "correntes", title: "Corrente Ouro Rosé", price: 169.90, images: ["imagens/corrente9a.jpg","imagens/corrente9b.jpg","imagens/corrente9c.jpg","imagens/corrente9d.jpg"], desc: "Diferente e delicada." },
-      { id: "corrente10", category: "correntes", title: "Corrente Luxo Festa", price: 229.90, images: ["imagens/corrente10a.jpg","imagens/corrente10b.jpg","imagens/corrente10c.jpg","imagens/corrente10d.jpg"], desc: "Para momentos especiais." },
-    ];
-
-    const container = document.getElementById("products");
-    const renderProducts = (category = "aneis") => {
-      container.innerHTML = "";
-      const filtered = products.filter(p => p.category === category);
-      filtered.forEach(p => {
-        const div = document.createElement("div");
-        div.classList.add("product");
-        div.innerHTML = `<img src="${p.images[0]}" alt="${p.title}"><h3>${p.title}</h3><p>R$ ${p.price.toFixed(2)}</p>`;
-        container.appendChild(div);
-      });
-    };
-    renderProducts();
-
-    document.querySelectorAll("nav a").forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        renderProducts(e.target.dataset.category);
-      });
-    });
-  </script>
-</body>
-</html>
