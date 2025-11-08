@@ -422,14 +422,33 @@
 </footer>
 
 <script>
-/* ========== CONFIG ========== */
-const WHATSAPP_NUMBER = "5518996377806"; // +55 18 97308-560
+// Seleciona o carrossel
+const carouselContainer = document.querySelector(".carousel-container");
+const carouselInner = document.querySelector(".carousel-inner");
+const slides = document.querySelectorAll(".carousel-item");
 
-/* === CAROUSEL === */
-const carouselTrack=document.getElementById('carouselTrack');
-let carouselIndex=0;
-const carouselLen = carouselTrack.children.length;
-setInterval(()=>{ carouselIndex=(carouselIndex+1)%carouselLen; carouselTrack.style.transform=`translateX(-${carouselIndex*100}%)`; },5000);
+let currentIndex = 0;
+
+// Função que mostra o slide atual sempre centralizado
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.style.display = i === index ? "flex" : "none";
+  });
+
+  // Garante centralização
+  carouselInner.style.justifyContent = "center";
+  carouselInner.style.alignItems = "center";
+}
+
+// Troca automática a cada 3 segundos
+function nextSlide() {
+  currentIndex = (currentIndex + 1) % slides.length;
+  showSlide(currentIndex);
+}
+
+// Inicia
+showSlide(currentIndex);
+setInterval(nextSlide, 3000);
 
 /* === PRODUCTS (examples placeholders) === */
 const products = [
@@ -648,6 +667,7 @@ updateCartUI();
 </script>
 </body>
 </html>
+
 
 
 
