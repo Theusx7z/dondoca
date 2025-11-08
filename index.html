@@ -16,6 +16,7 @@
   body{font-family:Inter, Arial, sans-serif;margin:0;background:var(--accent);color:var(--dark);}
   a{text-decoration:none;color:inherit}
 
+  /* ===== HEADER ===== */
   header{
     background:var(--white);
     position:sticky;
@@ -30,16 +31,34 @@
     flex-direction:column;
     align-items:center;
     padding:12px 16px;
-    position:relative;
   }
   .brand{text-align:center;}
-  .brand h1{font-size:28px;color:var(--primary);margin:4px 0 0 0;}
+  .brand h1{
+    font-size:28px;
+    color:var(--primary);
+    margin:4px 0 0 0;
+  }
   .brand span{font-size:13px;color:var(--muted);}
-
   nav{margin-top:10px;}
-  nav ul{list-style:none;display:flex;gap:14px;margin:0;padding:0;flex-wrap:wrap;justify-content:center;}
-  nav a{padding:8px 14px;border-radius:10px;font-weight:600;transition:.2s;}
-  nav a:hover,nav a.active{background:var(--primary);color:#fff;}
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:14px;
+    margin:0;
+    padding:0;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  nav a{
+    padding:8px 14px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.2s;
+  }
+  nav a:hover, nav a.active{
+    background:var(--primary);
+    color:#fff;
+  }
 
   .header-actions{
     position:absolute;
@@ -50,27 +69,62 @@
     gap:10px;
   }
 
-  .btn{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:600;box-shadow:0 2px 4px rgba(0,0,0,.08);}
+  .btn{
+    border:0;
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+    font-weight:600;
+    box-shadow:0 2px 4px rgba(0,0,0,.08);
+  }
   .btn.whats{background:#25d366;color:#fff;}
   .btn.cart{background:var(--primary);color:#fff;}
-  .badge{background:#fff;color:var(--primary);font-weight:700;padding:2px 8px;border-radius:999px;margin-left:5px;}
+  .badge{
+    background:#fff;
+    color:var(--primary);
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:999px;
+    margin-left:5px;
+  }
 
+  /* ===== CAROUSEL ===== */
   .carousel{position:relative;overflow:hidden;background:#000}
   .carousel-track{display:flex;transition:transform .8s ease}
   .carousel-slide{min-width:100%;flex-shrink:0}
   .carousel-slide img{width:100%;height:420px;object-fit:cover;display:block}
-  @media (max-width:820px){.carousel-slide img{height:300px}}
-  @media (max-width:480px){.carousel-slide img{height:220px}}
+  @media (max-width:820px){ .carousel-slide img{height:300px} }
+  @media (max-width:480px){ .carousel-slide img{height:220px} }
 
+  /* ===== GRID ===== */
   main{max-width:1200px;margin:20px auto;padding:0 16px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
-  .card{background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.05);display:flex;flex-direction:column;text-align:center;}
-  .card img{width:100%;height:300px;object-fit:cover;cursor:pointer;transition:transform .2s;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+  }
+  .card{
+    background:var(--white);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+  }
+  .card img{
+    width:100%;
+    height:240px; /* voltou ao tamanho menor original */
+    object-fit:cover;
+    cursor:pointer;
+    transition:transform .2s;
+  }
   .card img:hover{transform:scale(1.03);}
   .card .body{padding:12px;}
   .title{font-weight:700;margin-bottom:6px;}
   .price{color:var(--primary);font-weight:800;margin-bottom:8px;}
 
+  /* ===== MODAL (produto com 4 fotos) ===== */
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:160;padding:14px}
   .modal.open{display:flex}
   .modal-card{background:var(--white);border-radius:12px;max-width:1000px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px;overflow:auto}
@@ -81,27 +135,21 @@
   .modal-info .price{font-weight:800;color:var(--primary);margin-top:10px}
   .modal-info .modal-actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
 
-  footer{background:var(--white);padding:34px 16px;margin-top:28px;border-top:1px solid #eee;}
-  .footer-inner{max-width:1200px;margin:0 auto;display:flex;gap:20px;flex-wrap:wrap;justify-content:center;text-align:center;}
-  .footer-banner{width:100%;max-width:800px;border-radius:12px;margin-bottom:20px;}
-  .footer-bottom{text-align:center;color:var(--muted);margin-top:18px;}
+  /* ===== CHECKOUT ===== */
+  #checkoutModal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:180;padding:14px}
+  #checkoutModal.open{display:flex;}
+  .checkout-card{background:var(--white);border-radius:12px;max-width:500px;width:100%;padding:20px;}
+  .checkout-card h3{text-align:center;margin-top:0;}
+  .checkout-card label{display:block;margin-top:10px;font-weight:600;}
+  .checkout-card input{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:6px;}
+  .error{color:red;font-size:13px;margin-top:4px;display:none;}
 
   @media (max-width:600px){
     .header-actions{position:static;justify-content:center;margin-top:8px;}
-    .card img{height:240px;}
+    .card img{height:200px;}
     .modal-card{grid-template-columns:1fr;max-height:90vh}
     .gallery img{height:140px}
   }
-
-  /* ==== carrinho e checkout ==== */
-  #cartModal,#checkoutModal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:200;padding:14px;}
-  #cartModal.open,#checkoutModal.open{display:flex;}
-  .cart-box,.checkout-box{background:#fff;border-radius:12px;max-width:600px;width:100%;padding:20px;overflow:auto;}
-  .cart-items div{margin:6px 0;padding:8px;background:#f7f7f7;border-radius:8px;}
-  .checkout-field{margin-bottom:12px;text-align:left;}
-  .checkout-field label{display:block;margin-bottom:4px;font-weight:600;}
-  .checkout-field input{width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;}
-  .error{color:red;font-size:13px;margin-top:4px;}
 </style>
 </head>
 <body>
@@ -128,6 +176,7 @@
   </div>
 </header>
 
+<!-- CAROUSEL -->
 <section class="carousel">
   <div class="carousel-track" id="carouselTrack">
     <div class="carousel-slide"><img src="https://via.placeholder.com/1920x500?text=Banner+1"></div>
@@ -139,94 +188,142 @@
   </div>
 </section>
 
-<main><section id="productsGrid" class="grid"></section></main>
+<main>
+  <section id="productsGrid" class="grid"></section>
+</main>
 
-<!-- modal produto -->
-<div class="modal" id="productModal"><div class="modal-card"><div class="gallery" id="modalGallery"></div>
-<div class="modal-info"><h3 id="modalTitle"></h3><p id="modalDesc"></p><div class="price" id="modalPrice"></div>
-<div class="modal-actions"><button class="btn cart" id="modalAddBtn">Adicionar ao Carrinho</button><button class="btn" id="modalCloseBtn">Fechar</button></div></div></div></div>
-
-<!-- carrinho -->
-<div id="cartModal">
-  <div class="cart-box">
-    <h3>Seu Carrinho</h3>
-    <div class="cart-items" id="cartItems"></div>
-    <p><strong>Total:</strong> <span id="cartTotal"></span></p>
-    <button class="btn" id="checkoutBtn">Prosseguir</button>
-    <button class="btn" id="closeCart">Fechar</button>
+<!-- MODAL PRODUTO -->
+<div class="modal" id="productModal">
+  <div class="modal-card">
+    <div class="gallery" id="modalGallery"></div>
+    <div class="modal-info">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <div class="price" id="modalPrice"></div>
+      <div class="modal-actions">
+        <button class="btn cart" id="modalAddBtn">Adicionar ao Carrinho</button>
+        <button class="btn" id="modalCloseBtn">Fechar</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- checkout -->
+<!-- CHECKOUT -->
 <div id="checkoutModal">
-  <div class="checkout-box">
+  <div class="checkout-card">
     <h3>Finalizar Pedido</h3>
     <form id="checkoutForm">
-      <div class="checkout-field"><label>Nome</label><input id="nome"><div class="error" id="errNome"></div></div>
-      <div class="checkout-field"><label>Sobrenome</label><input id="sobrenome"><div class="error" id="errSobrenome"></div></div>
-      <div class="checkout-field"><label>Email</label><input id="email"><div class="error" id="errEmail"></div></div>
-      <div class="checkout-field"><label>Telefone</label><input id="telefone"><div class="error" id="errTelefone"></div></div>
-      <div class="checkout-field"><label>CEP</label><input id="cep"><div class="error" id="errCep"></div></div>
-      <div class="checkout-field"><label>Rua</label><input id="rua"><div class="error" id="errRua"></div></div>
-      <div class="checkout-field"><label>Número</label><input id="numero"><div class="error" id="errNumero"></div></div>
-      <div class="checkout-field"><label>Cidade</label><input id="cidade"><div class="error" id="errCidade"></div></div>
-      <button class="btn cart" type="submit">Enviar Pedido</button>
-      <button class="btn" type="button" id="closeCheckout">Cancelar</button>
+      <label>Nome<input name="nome" required></label><div class="error" id="errNome">Preencha seu nome</div>
+      <label>Sobrenome<input name="sobrenome" required></label><div class="error" id="errSobrenome">Preencha o sobrenome</div>
+      <label>Email<input name="email" type="email" required></label><div class="error" id="errEmail">Preencha o e-mail</div>
+      <label>Telefone<input name="telefone" required></label><div class="error" id="errTelefone">Preencha o telefone</div>
+      <label>CEP<input name="cep" required></label><div class="error" id="errCep">Preencha o CEP</div>
+      <label>Rua<input name="rua" required></label><div class="error" id="errRua">Preencha a rua</div>
+      <label>Cidade<input name="cidade" required></label><div class="error" id="errCidade">Preencha a cidade</div>
+      <label>Número<input name="numero" required></label><div class="error" id="errNumero">Preencha o número</div>
+      <div style="margin-top:14px;text-align:center;">
+        <button class="btn cart" type="submit">Enviar via WhatsApp</button>
+        <button class="btn" type="button" onclick="closeCheckout()">Cancelar</button>
+      </div>
     </form>
   </div>
 </div>
 
 <footer>
   <div class="footer-inner">
-    <img class="footer-banner" src="https://via.placeholder.com/1200x300?text=Banner+Rodape">
-    <div><h4>Sobre a Dondoca</h4><p>Dondoca Semi Joias oferece peças selecionadas e sofisticadas para todas as ocasiões.</p><p><strong>Email:</strong> contato@dondoca.com.br</p></div>
+    <img class="footer-banner" src="https://via.placeholder.com/1200x300?text=Banner+Rodape" alt="">
+    <div>
+      <h4>Sobre a Dondoca</h4>
+      <p>Dondoca Semi Joias oferece peças selecionadas e sofisticadas para todas as ocasiões.</p>
+      <p><strong>Email:</strong> contato@dondoca.com.br</p>
+    </div>
   </div>
   <div class="footer-bottom">© 2025 Dondoca Semi Joias — Todos os direitos reservados</div>
 </footer>
 
 <script>
-const WHATSAPP_NUMBER="5599999999999";
+const WHATSAPP_NUMBER = "5599999999999";
 
+/* === CAROUSEL === */
+const carouselTrack=document.getElementById('carouselTrack');
+let index=0;setInterval(()=>{index=(index+1)%carouselTrack.children.length;carouselTrack.style.transform=`translateX(-${index*100}%)`;},5000);
+
+/* === PRODUTOS === */
 const products=[
-{id:"anel1",category:"aneis",title:"Anel Coração Dourado",price:139.9,images:["imagens/anel1a.jpg"],desc:"Anel folheado a ouro 18k com zircônias."},
-{id:"brinco1",category:"brincos",title:"Brinco Gota Cristal",price:99.9,images:["imagens/brinco1a.jpg"],desc:"Brinco folheado com cristal lapidado."}
+{id:"anel1",category:"aneis",title:"Anel Coração Dourado",price:139.90,images:["https://via.placeholder.com/400","https://via.placeholder.com/400","https://via.placeholder.com/400","https://via.placeholder.com/400"],desc:"Anel folheado a ouro 18k com zircônias cravejadas."},
+{id:"brinco1",category:"brincos",title:"Brinco Gota Cristal",price:99.90,images:["https://via.placeholder.com/400","https://via.placeholder.com/400","https://via.placeholder.com/400","https://via.placeholder.com/400"],desc:"Brinco folheado com cristal lapidado."}
 ];
-let activeCategory='aneis',cart=[];const grid=document.getElementById('productsGrid');const fmt=v=>'R$ '+v.toFixed(2).replace('.',',');
+let activeCategory='aneis';
+let cart=[];
 
-function render(){grid.innerHTML='';products.filter(p=>p.category===activeCategory).forEach(p=>{const c=document.createElement('div');c.className='card';c.innerHTML=`<img src="${p.images[0]||'https://via.placeholder.com/400'}" onclick="openProduct('${p.id}')"><div class="body"><div class="title">${p.title}</div><div class="price">${fmt(p.price)}</div><button class="btn cart" onclick="addToCart('${p.id}')">Adicionar</button></div>`;grid.appendChild(c);});}
+function fmt(v){return 'R$ '+v.toFixed(2).replace('.',',');}
+const grid=document.getElementById('productsGrid');
 
-function openProduct(id){const p=products.find(x=>x.id===id);if(!p)return;document.getElementById('modalTitle').textContent=p.title;document.getElementById('modalDesc').textContent=p.desc;document.getElementById('modalPrice').textContent=fmt(p.price);document.getElementById('modalAddBtn').onclick=()=>{addToCart(id);closeModal()};document.getElementById('productModal').classList.add('open');}
-function closeModal(){document.getElementById('productModal').classList.remove('open');}
-function addToCart(id){const p=products.find(x=>x.id===id);if(!p)return;const i=cart.find(x=>x.id===id);i?i.qty++:cart.push({...p,qty:1});updateCartUI();}
-function updateCartUI(){document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0);}
-function openCart(){const box=document.getElementById('cartItems');box.innerHTML='';let total=0;cart.forEach(i=>{total+=i.qty*i.price;box.innerHTML+=`<div>${i.qty}x ${i.title} - ${fmt(i.price*i.qty)}</div>`;});document.getElementById('cartTotal').textContent=fmt(total);document.getElementById('cartModal').classList.add('open');}
-function closeCart(){document.getElementById('cartModal').classList.remove('open');}
-function openCheckout(){document.getElementById('cartModal').classList.remove('open');document.getElementById('checkoutModal').classList.add('open');}
-function closeCheckout(){document.getElementById('checkoutModal').classList.remove('open');}
-
-document.getElementById('openCartBtn').onclick=openCart;
-document.getElementById('closeCart').onclick=closeCart;
-document.getElementById('checkoutBtn').onclick=openCheckout;
-document.getElementById('closeCheckout').onclick=closeCheckout;
-
-document.getElementById('checkoutForm').onsubmit=e=>{
-  e.preventDefault();
-  let ok=true,fields=['nome','sobrenome','email','telefone','cep','rua','numero','cidade'];
-  fields.forEach(f=>{
-    const v=document.getElementById(f).value.trim();
-    const err=document.getElementById('err'+f.charAt(0).toUpperCase()+f.slice(1));
-    if(!v){err.textContent='Você esqueceu este campo, preencha para prosseguir.';ok=false;}else err.textContent='';
+function render(){
+  grid.innerHTML='';
+  products.filter(p=>p.category===activeCategory).forEach(p=>{
+    const el=document.createElement('div');
+    el.className='card';
+    el.innerHTML=`
+      <img src="${p.images[0]}" alt="${p.title}" onclick="openProduct('${p.id}')">
+      <div class="body">
+        <div class="title">${p.title}</div>
+        <div class="price">${fmt(p.price)}</div>
+        <button class="btn cart" onclick="addToCart('${p.id}')">Adicionar</button>
+      </div>`;
+    grid.appendChild(el);
   });
-  if(!ok)return;
-  const info=fields.map(f=>`${f}: ${document.getElementById(f).value}`).join('\n');
-  const itens=cart.map(i=>`${i.qty}x ${i.title} - ${fmt(i.price*i.qty)}`).join('\n');
-  const total=fmt(cart.reduce((s,i)=>s+i.qty*i.price,0));
-  const msg=encodeURIComponent(`Novo pedido:\n${itens}\nTotal: ${total}\n\nDados do cliente:\n${info}`);
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,'_blank');
+}
+render();
+
+/* === MODAL === */
+function openProduct(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  const g=document.getElementById('modalGallery');
+  g.innerHTML='';
+  p.images.forEach(src=>{const img=document.createElement('img');img.src=src;g.appendChild(img);});
+  document.getElementById('modalTitle').textContent=p.title;
+  document.getElementById('modalDesc').textContent=p.desc;
+  document.getElementById('modalPrice').textContent=fmt(p.price);
+  document.getElementById('modalAddBtn').onclick=()=>{addToCart(id);closeModal();};
+  document.getElementById('productModal').classList.add('open');
+}
+function closeModal(){document.getElementById('productModal').classList.remove('open');}
+
+/* === CARRINHO === */
+function addToCart(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  const ex=cart.find(c=>c.id===id);
+  if(ex)ex.qty++;else cart.push({...p,qty:1});
+  updateCart();
+}
+function updateCart(){
+  document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0);
+}
+document.getElementById('openCartBtn').onclick=()=>{
+  if(cart.length===0)return alert('Carrinho vazio!');
+  openCheckout();
 };
 
-document.querySelectorAll('nav a').forEach(a=>a.onclick=e=>{e.preventDefault();document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));a.classList.add('active');activeCategory=a.dataset.cat;render();});
-render();updateCartUI();
+/* === CHECKOUT === */
+function openCheckout(){document.getElementById('checkoutModal').classList.add('open');}
+function closeCheckout(){document.getElementById('checkoutModal').classList.remove('open');}
+document.getElementById('checkoutForm').onsubmit=e=>{
+  e.preventDefault();
+  const f=e.target;
+  let valid=true;
+  f.querySelectorAll('input').forEach(inp=>{
+    const err=document.getElementById('err'+inp.name.charAt(0).toUpperCase()+inp.name.slice(1));
+    if(!inp.value.trim()){err.style.display='block';valid=false;}else err.style.display='none';
+  });
+  if(!valid)return;
+  const msgLines=cart.map(i=>`${i.qty}x ${i.title} - ${fmt(i.price)}`).join('\n');
+  const total=fmt(cart.reduce((s,i)=>s+i.qty*i.price,0));
+  const dados=`Nome: ${f.nome.value} ${f.sobrenome.value}\nEmail: ${f.email.value}\nTel: ${f.telefone.value}\nEndereço: ${f.rua.value}, ${f.numero.value} - ${f.cidade.value}\nCEP: ${f.cep.value}`;
+  const msg=encodeURIComponent(`🛍️ Pedido Dondoca:\n${msgLines}\nTotal: ${total}\n\n${dados}`);
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,'_blank');
+  closeCheckout();
+};
 </script>
 </body>
 </html>
