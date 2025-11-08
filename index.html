@@ -97,6 +97,14 @@
     margin-left:5px;
   }
 
+  /* ===== CAROUSEL ===== */
+  .carousel{position:relative;overflow:hidden;background:#000}
+  .carousel-track{display:flex;transition:transform .8s ease}
+  .carousel-slide{min-width:100%;flex-shrink:0}
+  .carousel-slide img{width:100%;height:420px;object-fit:cover;display:block}
+  @media (max-width:820px){ .carousel-slide img{height:300px} }
+  @media (max-width:480px){ .carousel-slide img{height:220px} }
+
   /* ===== GRID ===== */
   main{max-width:1200px;margin:20px auto;padding:0 16px;}
   .grid{
@@ -115,15 +123,26 @@
   }
   .card img{
     width:100%;
-    height:280px;
+    height:300px; /* larger images */
     object-fit:cover;
     cursor:pointer;
     transition:transform .2s;
   }
-  .card img:hover{transform:scale(1.04);}
+  .card img:hover{transform:scale(1.03);}
   .card .body{padding:12px;}
   .title{font-weight:700;margin-bottom:6px;}
-  .price{color:var(--primary);font-weight:800;}
+  .price{color:var(--primary);font-weight:800;margin-bottom:8px;}
+
+  /* ===== MODAL (product detail) ===== */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:160;padding:14px}
+  .modal.open{display:flex}
+  .modal-card{background:var(--white);border-radius:12px;max-width:1000px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px;overflow:auto}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .gallery img{width:100%;height:200px;object-fit:cover;border-radius:8px}
+  .modal-info h3{margin:0 0 8px}
+  .modal-info p{color:var(--muted)}
+  .modal-info .price{font-weight:800;color:var(--primary);margin-top:10px}
+  .modal-info .modal-actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
 
   /* ===== FOOTER ===== */
   footer{
@@ -151,7 +170,9 @@
 
   @media (max-width:600px){
     .header-actions{position:static;justify-content:center;margin-top:8px;}
-    .card img{height:220px;}
+    .card img{height:240px;}
+    .modal-card{grid-template-columns:1fr;max-height:90vh}
+    .gallery img{height:140px}
   }
 </style>
 </head>
@@ -164,8 +185,8 @@
       <span>Semi Joias com brilho e elegância</span>
     </div>
     <div class="header-actions">
-      <button class="btn whats" id="whatsBtn">💬 WhatsApp</button>
-      <button class="btn cart" id="openCartBtn">🛒<span id="cartCount" class="badge">0</span></button>
+      <button class="btn whats" id="whatsBtn" title="WhatsApp">💬 WhatsApp</button>
+      <button class="btn cart" id="openCartBtn" title="Abrir carrinho">🛒 <span id="cartCount" class="badge">0</span></button>
     </div>
     <nav>
       <ul>
@@ -179,9 +200,37 @@
   </div>
 </header>
 
+<!-- CAROUSEL 6 IMAGENS -->
+<section class="carousel" aria-hidden="false">
+  <div class="carousel-track" id="carouselTrack">
+    <div class="carousel-slide"><img src="https://via.placeholder.com/1920x500?text=Banner+1+1920x500" alt="Banner 1"></div>
+    <div class="carousel-slide"><img src="https://via.placeholder.com/1920x500?text=Banner+2+1920x500" alt="Banner 2"></div>
+    <div class="carousel-slide"><img src="https://via.placeholder.com/1920x500?text=Banner+3+1920x500" alt="Banner 3"></div>
+    <div class="carousel-slide"><img src="https://via.placeholder.com/1920x500?text=Banner+4+1920x500" alt="Banner 4"></div>
+    <div class="carousel-slide"><img src="https://via.placeholder.com/1920x500?text=Banner+5+1920x500" alt="Banner 5"></div>
+    <div class="carousel-slide"><img src="https://via.placeholder.com/1920x500?text=Banner+6+1920x500" alt="Banner 6"></div>
+  </div>
+</section>
+
 <main>
-  <section id="productsGrid" class="grid"></section>
+  <section id="productsGrid" class="grid" aria-live="polite"></section>
 </main>
+
+<!-- MODAL DE PRODUTO (4 fotos + info) -->
+<div class="modal" id="productModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-card">
+    <div class="gallery" id="modalGallery"></div>
+    <div class="modal-info">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <div class="price" id="modalPrice"></div>
+      <div class="modal-actions">
+        <button class="btn primary" id="modalAddBtn">Adicionar ao Carrinho</button>
+        <button class="btn" id="modalCloseBtn">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="footer-inner">
@@ -196,85 +245,148 @@
 </footer>
 
 <script>
+/* ========== CONFIG ========== */
 const WHATSAPP_NUMBER = "5599999999999";
 
+/* ========== CAROUSEL ========== */
+const carouselTrack = document.getElementById('carouselTrack');
+const slides = Array.from(carouselTrack.children);
+let currentIndex = 0;
+const slideCount = slides.length;
+const intervalMs = 5000;
+function goToSlide(index){
+  carouselTrack.style.transform = `translateX(-${index * 100}%)`;
+  currentIndex = index;
+}
+function nextSlide(){ goToSlide((currentIndex + 1) % slideCount); }
+let carouselTimer = setInterval(nextSlide, intervalMs);
+document.querySelector('.carousel').addEventListener('mouseenter', ()=> clearInterval(carouselTimer));
+document.querySelector('.carousel').addEventListener('mouseleave', ()=> { clearInterval(carouselTimer); carouselTimer = setInterval(nextSlide, intervalMs); });
+
+/* ========== DADOS (mantive seu array manual) ==========
+   Você já tinha os produtos — aqui eu uso o mesmo formato.
+   (você pode adicionar/editar imagens e textos em seguida) */
 const products = [
   /* === ANÉIS === */
-  {id:"anel1",category:"aneis",title:"Anel Coração Dourado",price:139.90,images:["imagens/anel1a.jpg","imagens/anel1b.jpg","imagens/anel1c.jpg"],desc:"Anel folheado a ouro 18k com zircônias cravejadas."},
-  {id:"anel2",category:"aneis",title:"Anel Luxo Zircônia",price:199.90,images:["imagens/anel2a.jpg"],desc:"Anel delicado com pedra central e banho em ouro."},
-  {id:"anel3",category:"aneis",title:"Anel Duplo",price:149.90,images:["imagens/anel3a.jpg"],desc:"Modelo duplo moderno e elegante."},
+  {id:"anel1",category:"aneis",title:"Anel Coração Dourado",price:139.90,images:["imagens/anel1a.jpg","imagens/anel1b.jpg","imagens/anel1c.jpg","imagens/anel1d.jpg"],desc:"Anel folheado a ouro 18k com zircônias cravejadas."},
+  {id:"anel2",category:"aneis",title:"Anel Luxo Zircônia",price:199.90,images:["imagens/anel2a.jpg","imagens/anel2b.jpg","imagens/anel2c.jpg","imagens/anel2d.jpg"],desc:"Anel delicado com pedra central e banho em ouro."},
+  {id:"anel3",category:"aneis",title:"Anel Duplo",price:149.90,images:["imagens/anel3a.jpg","imagens/anel3b.jpg","imagens/anel3c.jpg","imagens/anel3d.jpg"],desc:"Modelo duplo moderno e elegante."},
 
   /* === BRINCOS === */
-  {id:"brinco1",category:"brincos",title:"Brinco Gota Cristal",price:99.90,images:["imagens/brinco1a.jpg"],desc:"Brinco folheado com cristal lapidado."},
-  {id:"brinco2",category:"brincos",title:"Brinco Argola Fina",price:89.90,images:["imagens/brinco2a.jpg"],desc:"Argola delicada folheada a ouro 18k."},
+  {id:"brinco1",category:"brincos",title:"Brinco Gota Cristal",price:99.90,images:["imagens/brinco1a.jpg","imagens/brinco1b.jpg","imagens/brinco1c.jpg","imagens/brinco1d.jpg"],desc:"Brinco folheado com cristal lapidado."},
+  {id:"brinco2",category:"brincos",title:"Brinco Argola Fina",price:89.90,images:["imagens/brinco2a.jpg","imagens/brinco2b.jpg","imagens/brinco2c.jpg","imagens/brinco2d.jpg"],desc:"Argola delicada folheada a ouro 18k."},
 
   /* === PULSEIRAS === */
-  {id:"pulseira1",category:"pulseiras",title:"Pulseira Riviera",price:179.90,images:["imagens/pulseira1a.jpg"],desc:"Pulseira Riviera folheada com zircônias claras."},
-  {id:"pulseira2",category:"pulseiras",title:"Pulseira Corações",price:129.90,images:["imagens/pulseira2a.jpg"],desc:"Pulseira romântica folheada em ouro."},
+  {id:"pulseira1",category:"pulseiras",title:"Pulseira Riviera",price:179.90,images:["imagens/pulseira1a.jpg","imagens/pulseira1b.jpg","imagens/pulseira1c.jpg","imagens/pulseira1d.jpg"],desc:"Pulseira Riviera folheada com zircônias claras."},
+  {id:"pulseira2",category:"pulseiras",title:"Pulseira Corações",price:129.90,images:["imagens/pulseira2a.jpg","imagens/pulseira2b.jpg","imagens/pulseira2c.jpg","imagens/pulseira2d.jpg"],desc:"Pulseira romântica folheada em ouro."},
 
   /* === COLARES === */
-  {id:"colar1",category:"colares",title:"Colar Ponto de Luz",price:159.90,images:["imagens/colar1a.jpg"],desc:"Colar delicado com pingente de zircônia."},
-  {id:"colar2",category:"colares",title:"Colar Duplo Camadas",price:189.90,images:["imagens/colar2a.jpg"],desc:"Colar moderno com duas camadas folheadas."},
+  {id:"colar1",category:"colares",title:"Colar Ponto de Luz",price:159.90,images:["imagens/colar1a.jpg","imagens/colar1b.jpg","imagens/colar1c.jpg","imagens/colar1d.jpg"],desc:"Colar delicado com pingente de zircônia."},
+  {id:"colar2",category:"colares",title:"Colar Duplo Camadas",price:189.90,images:["imagens/colar2a.jpg","imagens/colar2b.jpg","imagens/colar2c.jpg","imagens/colar2d.jpg"],desc:"Colar moderno com duas camadas folheadas."},
 
   /* === CORRENTES === */
-  {id:"corrente1",category:"correntes",title:"Corrente Masculina 3mm",price:219.90,images:["imagens/corrente1a.jpg"],desc:"Corrente de aço inoxidável com fecho seguro."},
-  {id:"corrente2",category:"correntes",title:"Corrente Feminina Fina",price:159.90,images:["imagens/corrente2a.jpg"],desc:"Corrente delicada e sofisticada para o dia a dia."}
+  {id:"corrente1",category:"correntes",title:"Corrente Masculina 3mm",price:219.90,images:["imagens/corrente1a.jpg","imagens/corrente1b.jpg","imagens/corrente1c.jpg","imagens/corrente1d.jpg"],desc:"Corrente de aço inoxidável com fecho seguro."},
+  {id:"corrente2",category:"correntes",title:"Corrente Feminina Fina",price:159.90,images:["imagens/corrente2a.jpg","imagens/corrente2b.jpg","imagens/corrente2c.jpg","imagens/corrente2d.jpg"],desc:"Corrente delicada e sofisticada para o dia a dia."}
 ];
 
 let activeCategory = 'aneis';
 let cart = [];
 
+/* ========== HELPERS ========== */
 const grid = document.getElementById('productsGrid');
 const fmt = v => 'R$ ' + v.toFixed(2).replace('.',',');
 
+/* ========== RENDER PRODUTOS ========== */
 function render(){
-  grid.innerHTML='';
+  grid.innerHTML = '';
   products.filter(p=>p.category===activeCategory).forEach(p=>{
-    const card=document.createElement('div');
-    card.className='card';
-    card.innerHTML=`
-      <img src="${p.images[0]||'https://via.placeholder.com/400'}" alt="${p.title}">
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${p.images[0]||'https://via.placeholder.com/400'}" alt="${p.title}" loading="lazy">
       <div class="body">
         <div class="title">${p.title}</div>
         <div class="price">${fmt(p.price)}</div>
-        <button class="btn cart" onclick="addToCart('${p.id}')">Adicionar</button>
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+          <button class="btn" onclick="openProduct('${p.id}')">Ver</button>
+          <button class="btn cart" onclick="addToCart('${p.id}')">Adicionar</button>
+        </div>
       </div>
     `;
     grid.appendChild(card);
   });
 }
 
+/* ========== MODAL: abrir produto (4 fotos + info) ========== */
+function openProduct(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const gallery = document.getElementById('modalGallery');
+  gallery.innerHTML = '';
+  // garante 4 posições (preenche com placeholders se não tiver)
+  for(let i=0;i<4;i++){
+    const src = p.images[i] || p.images[0] || 'https://via.placeholder.com/600';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = p.title + ' ' + (i+1);
+    gallery.appendChild(img);
+  }
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalDesc').textContent = p.desc || '';
+  document.getElementById('modalPrice').textContent = fmt(p.price);
+  document.getElementById('modalAddBtn').onclick = () => { addToCart(id); closeModal(); };
+  document.getElementById('productModal').classList.add('open');
+  document.getElementById('productModal').setAttribute('aria-hidden','false');
+}
+function closeModal(){
+  document.getElementById('productModal').classList.remove('open');
+  document.getElementById('productModal').setAttribute('aria-hidden','true');
+}
+
+/* ========== CARRINHO (simples) ========== */
 function addToCart(id){
-  const p=products.find(x=>x.id===id);
-  const item=cart.find(x=>x.id===id);
-  if(item) item.qty++; else cart.push({id:p.id,title:p.title,price:p.price,qty:1});
-  updateCart();
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const it = cart.find(x=>x.id===id);
+  if(it) it.qty++; else cart.push({id:p.id, title:p.title, price:p.price, qty:1});
+  updateCartUI();
 }
-function updateCart(){
-  const total=cart.reduce((t,i)=>t+i.qty,0);
-  document.getElementById('cartCount').textContent=total;
+function updateCartUI(){
+  const total = cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent = total;
 }
+
+/* ========== EVENTOS ======= */
 document.querySelectorAll('nav a').forEach(a=>{
-  a.addEventListener('click',e=>{
+  a.addEventListener('click', e=>{
     e.preventDefault();
     document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
     a.classList.add('active');
-    activeCategory=a.dataset.cat;
+    activeCategory = a.dataset.cat;
     render();
+    window.scrollTo({top: document.querySelector('main').offsetTop - 60, behavior: 'smooth'});
   });
 });
-document.getElementById('whatsBtn').addEventListener('click',()=>{
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}`,'_blank');
+document.getElementById('whatsBtn').addEventListener('click', ()=> {
+  if(!WHATSAPP_NUMBER) return alert('Número do WhatsApp não configurado.');
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}`, '_blank');
 });
-document.getElementById('openCartBtn').addEventListener('click',()=>{
+document.getElementById('openCartBtn').addEventListener('click', ()=>{
   if(cart.length===0) return alert('Carrinho vazio!');
-  const msg=cart.map(i=>`${i.qty}x ${i.title} - ${fmt(i.price)}`).join('%0A');
-  const total=fmt(cart.reduce((s,i)=>s+i.qty*i.price,0));
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Olá!%20Meu%20pedido:%0A${msg}%0ATotal:%20${total}`,'_blank');
+  const lines = cart.map(i=>`${i.qty}x ${i.title} - ${fmt(i.price)}`).join('\n');
+  const total = fmt(cart.reduce((s,i)=>s+i.qty*i.price,0));
+  const msg = encodeURIComponent(`Olá! Meu pedido:\n${lines}\nTotal: ${total}`);
+  if(!WHATSAPP_NUMBER) return alert('Número do WhatsApp não configurado.');
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
 });
 
+/* modal close */
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+document.getElementById('productModal').addEventListener('click', e=> { if(e.target === document.getElementById('productModal')) closeModal(); });
+
+/* init */
 render();
+updateCartUI();
 </script>
 </body>
 </html>
-
