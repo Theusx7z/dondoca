@@ -112,12 +112,24 @@
     flex-direction:column;
     text-align:center;
   }
-  .card img{
+
+  /* === PRODUCT IMAGE: square 250x250 === */
+  .card .imgwrap{
     width:100%;
-    height:240px; /* voltou ao tamanho menor original */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(#fff,#fff);
+    padding:16px 16px 0 16px;
+  }
+  .card img{
+    width:250px;
+    height:250px;
     object-fit:cover;
+    border-radius:8px;
     cursor:pointer;
-    transition:transform .2s;
+    transition:transform .18s;
+    display:block;
   }
   .card img:hover{transform:scale(1.03);}
   .card .body{padding:12px;}
@@ -144,9 +156,14 @@
   .checkout-card input{width:100%;padding:8px;margin-top:4px;border:1px solid #ccc;border-radius:6px;}
   .error{color:red;font-size:13px;margin-top:4px;display:none;}
 
+  footer{background:var(--white);padding:34px 16px;margin-top:28px;border-top:1px solid #eee;}
+  .footer-inner{max-width:1200px;margin:0 auto;display:flex;gap:20px;flex-wrap:wrap;justify-content:center;text-align:center;}
+  .footer-banner{width:100%;max-width:800px;border-radius:12px;margin-bottom:20px;}
+  .footer-bottom{text-align:center;color:var(--muted);margin-top:18px;}
+
   @media (max-width:600px){
     .header-actions{position:static;justify-content:center;margin-top:8px;}
-    .card img{height:200px;}
+    .card img{width:200px;height:200px;}
     .modal-card{grid-template-columns:1fr;max-height:90vh}
     .gallery img{height:140px}
   }
@@ -189,7 +206,7 @@
 </section>
 
 <main>
-  <section id="productsGrid" class="grid"></section>
+  <section id="productsGrid" class="grid" aria-live="polite"></section>
 </main>
 
 <!-- MODAL PRODUTO -->
@@ -246,84 +263,242 @@ const WHATSAPP_NUMBER = "5599999999999";
 
 /* === CAROUSEL === */
 const carouselTrack=document.getElementById('carouselTrack');
-let index=0;setInterval(()=>{index=(index+1)%carouselTrack.children.length;carouselTrack.style.transform=`translateX(-${index*100}%)`;},5000);
+let carouselIndex=0;
+const carouselLen = carouselTrack.children.length;
+setInterval(()=>{ carouselIndex=(carouselIndex+1)%carouselLen; carouselTrack.style.transform=`translateX(-${carouselIndex*100}%)`; },5000);
 
-/* === PRODUTOS === */
-const products=[
-{id:"anel1",category:"aneis",title:"Anel Coração Dourado",price:139.90,images:["https://via.placeholder.com/400","https://via.placeholder.com/400","https://via.placeholder.com/400","https://via.placeholder.com/400"],desc:"Anel folheado a ouro 18k com zircônias cravejadas."},
-{id:"brinco1",category:"brincos",title:"Brinco Gota Cristal",price:99.90,images:["https://via.placeholder.com/400","https://via.placeholder.com/400","https://via.placeholder.com/400","https://via.placeholder.com/400"],desc:"Brinco folheado com cristal lapidado."}
+/* === PRODUTOS ===
+   Aqui você adiciona manualmente seus produtos (id único, category, title, price, images:[..], desc)
+   Exemplo já com placeholders para você editar depois.
+*/
+const products = [
+  /* === ANÉIS (exemplos) === */
+  {id:"anel1",category:"aneis",title:"Anel Coração Dourado",price:139.90,
+    images:[
+      "https://via.placeholder.com/600?text=Anel+1a",
+      "https://via.placeholder.com/600?text=Anel+1b",
+      "https://via.placeholder.com/600?text=Anel+1c",
+      "https://via.placeholder.com/600?text=Anel+1d"
+    ],
+    desc:"Anel folheado a ouro 18k com zircônias cravejadas."
+  },
+  {id:"anel2",category:"aneis",title:"Anel Luxo Zircônia",price:199.90,
+    images:[
+      "https://via.placeholder.com/600?text=Anel+2a",
+      "https://via.placeholder.com/600?text=Anel+2b",
+      "https://via.placeholder.com/600?text=Anel+2c",
+      "https://via.placeholder.com/600?text=Anel+2d"
+    ],
+    desc:"Anel delicado com pedra central e banho em ouro."
+  },
+
+  /* === BRINCOS === */
+  {id:"brinco1",category:"brincos",title:"Brinco Gota Cristal",price:99.90,
+    images:[
+      "https://via.placeholder.com/600?text=Brinco+1a",
+      "https://via.placeholder.com/600?text=Brinco+1b",
+      "https://via.placeholder.com/600?text=Brinco+1c",
+      "https://via.placeholder.com/600?text=Brinco+1d"
+    ],
+    desc:"Brinco folheado com cristal lapidado."
+  },
+  {id:"brinco2",category:"brincos",title:"Brinco Argola Fina",price:89.90,
+    images:[
+      "https://via.placeholder.com/600?text=Brinco+2a",
+      "https://via.placeholder.com/600?text=Brinco+2b",
+      "https://via.placeholder.com/600?text=Brinco+2c",
+      "https://via.placeholder.com/600?text=Brinco+2d"
+    ],
+    desc:"Argola delicada folheada a ouro 18k."
+  },
+
+  /* === PULSEIRAS === */
+  {id:"pulseira1",category:"pulseiras",title:"Pulseira Riviera",price:179.90,
+    images:[
+      "https://via.placeholder.com/600?text=Pulseira+1a",
+      "https://via.placeholder.com/600?text=Pulseira+1b",
+      "https://via.placeholder.com/600?text=Pulseira+1c",
+      "https://via.placeholder.com/600?text=Pulseira+1d"
+    ],
+    desc:"Pulseira Riviera folheada com zircônias claras."
+  },
+  {id:"pulseira2",category:"pulseiras",title:"Pulseira Corações",price:129.90,
+    images:[
+      "https://via.placeholder.com/600?text=Pulseira+2a",
+      "https://via.placeholder.com/600?text=Pulseira+2b",
+      "https://via.placeholder.com/600?text=Pulseira+2c",
+      "https://via.placeholder.com/600?text=Pulseira+2d"
+    ],
+    desc:"Pulseira romântica folheada em ouro."
+  },
+
+  /* === COLARES === */
+  {id:"colar1",category:"colares",title:"Colar Ponto de Luz",price:159.90,
+    images:[
+      "https://via.placeholder.com/600?text=Colar+1a",
+      "https://via.placeholder.com/600?text=Colar+1b",
+      "https://via.placeholder.com/600?text=Colar+1c",
+      "https://via.placeholder.com/600?text=Colar+1d"
+    ],
+    desc:"Colar delicado com pingente de zircônia."
+  },
+  {id:"colar2",category:"colares",title:"Colar Duplo Camadas",price:189.90,
+    images:[
+      "https://via.placeholder.com/600?text=Colar+2a",
+      "https://via.placeholder.com/600?text=Colar+2b",
+      "https://via.placeholder.com/600?text=Colar+2c",
+      "https://via.placeholder.com/600?text=Colar+2d"
+    ],
+    desc:"Colar moderno com duas camadas folheadas."
+  },
+
+  /* === CORRENTES === */
+  {id:"corrente1",category:"correntes",title:"Corrente Masculina 3mm",price:219.90,
+    images:[
+      "https://via.placeholder.com/600?text=Corrente+1a",
+      "https://via.placeholder.com/600?text=Corrente+1b",
+      "https://via.placeholder.com/600?text=Corrente+1c",
+      "https://via.placeholder.com/600?text=Corrente+1d"
+    ],
+    desc:"Corrente de aço inoxidável com fecho seguro."
+  },
+  {id:"corrente2",category:"correntes",title:"Corrente Feminina Fina",price:159.90,
+    images:[
+      "https://via.placeholder.com/600?text=Corrente+2a",
+      "https://via.placeholder.com/600?text=Corrente+2b",
+      "https://via.placeholder.com/600?text=Corrente+2c",
+      "https://via.placeholder.com/600?text=Corrente+2d"
+    ],
+    desc:"Corrente delicada e sofisticada para o dia a dia."
+  }
 ];
+
 let activeCategory='aneis';
 let cart=[];
 
-function fmt(v){return 'R$ '+v.toFixed(2).replace('.',',');}
-const grid=document.getElementById('productsGrid');
+/* HELPERS */
+const fmt = v => 'R$ ' + v.toFixed(2).replace('.',',');
+const grid = document.getElementById('productsGrid');
 
+/* RENDER PRODUCTS */
 function render(){
   grid.innerHTML='';
-  products.filter(p=>p.category===activeCategory).forEach(p=>{
-    const el=document.createElement('div');
-    el.className='card';
-    el.innerHTML=`
-      <img src="${p.images[0]}" alt="${p.title}" onclick="openProduct('${p.id}')">
+  const list = products.filter(p => p.category === activeCategory);
+  list.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="imgwrap">
+        <img src="${p.images[0] || 'https://via.placeholder.com/600'}" alt="${p.title}" loading="lazy" onclick="openProduct('${p.id}')">
+      </div>
       <div class="body">
         <div class="title">${p.title}</div>
         <div class="price">${fmt(p.price)}</div>
-        <button class="btn cart" onclick="addToCart('${p.id}')">Adicionar</button>
-      </div>`;
-    grid.appendChild(el);
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+          <button class="btn" onclick="openProduct('${p.id}')">Ver</button>
+          <button class="btn cart" onclick="addToCart('${p.id}')">Adicionar</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
   });
 }
 render();
 
-/* === MODAL === */
+/* PRODUCT MODAL (4 fotos) */
 function openProduct(id){
-  const p=products.find(x=>x.id===id);if(!p)return;
-  const g=document.getElementById('modalGallery');
-  g.innerHTML='';
-  p.images.forEach(src=>{const img=document.createElement('img');img.src=src;g.appendChild(img);});
-  document.getElementById('modalTitle').textContent=p.title;
-  document.getElementById('modalDesc').textContent=p.desc;
-  document.getElementById('modalPrice').textContent=fmt(p.price);
-  document.getElementById('modalAddBtn').onclick=()=>{addToCart(id);closeModal();};
+  const p = products.find(x=>x.id===id); if(!p) return;
+  const gallery = document.getElementById('modalGallery'); gallery.innerHTML = '';
+  // garante 4 imagens (preenche com a primeira caso faltem)
+  for(let i=0;i<4;i++){
+    const src = p.images[i] || p.images[0] || 'https://via.placeholder.com/600';
+    const img = document.createElement('img'); img.src = src; img.alt = p.title + ' ' + (i+1);
+    gallery.appendChild(img);
+  }
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalDesc').textContent = p.desc || '';
+  document.getElementById('modalPrice').textContent = fmt(p.price);
+  document.getElementById('modalAddBtn').onclick = () => { addToCart(id); closeModal(); };
   document.getElementById('productModal').classList.add('open');
 }
-function closeModal(){document.getElementById('productModal').classList.remove('open');}
+function closeModal(){ document.getElementById('productModal').classList.remove('open'); }
 
-/* === CARRINHO === */
+/* CART */
 function addToCart(id){
-  const p=products.find(x=>x.id===id);if(!p)return;
-  const ex=cart.find(c=>c.id===id);
-  if(ex)ex.qty++;else cart.push({...p,qty:1});
-  updateCart();
+  const p = products.find(x=>x.id===id); if(!p) return;
+  const ex = cart.find(i=>i.id===id);
+  if(ex) ex.qty++;
+  else cart.push({ id:p.id, title:p.title, price:p.price, qty:1 });
+  updateCartUI();
 }
-function updateCart(){
-  document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0);
-}
-document.getElementById('openCartBtn').onclick=()=>{
-  if(cart.length===0)return alert('Carrinho vazio!');
-  openCheckout();
-};
+function updateCartUI(){ document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0); }
 
-/* === CHECKOUT === */
-function openCheckout(){document.getElementById('checkoutModal').classList.add('open');}
-function closeCheckout(){document.getElementById('checkoutModal').classList.remove('open');}
-document.getElementById('checkoutForm').onsubmit=e=>{
+/* CART -> open shows checkout modal (as requested) */
+function openCart(){
+  if(cart.length === 0){ alert('Carrinho vazio!'); return; }
+  openCheckout();
+}
+
+/* CHECKOUT modal & validation */
+function openCheckout(){ document.getElementById('checkoutModal').classList.add('open'); }
+function closeCheckout(){ document.getElementById('checkoutModal').classList.remove('open'); }
+
+document.getElementById('openCartBtn').addEventListener('click', openCart);
+document.getElementById('whatsBtn').addEventListener('click', ()=> {
+  if(!WHATSAPP_NUMBER) return alert('Número do WhatsApp não configurado.');
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}`, '_blank');
+});
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+
+document.getElementById('checkoutForm').addEventListener('submit', function(e){
   e.preventDefault();
-  const f=e.target;
-  let valid=true;
-  f.querySelectorAll('input').forEach(inp=>{
-    const err=document.getElementById('err'+inp.name.charAt(0).toUpperCase()+inp.name.slice(1));
-    if(!inp.value.trim()){err.style.display='block';valid=false;}else err.style.display='none';
+  const form = e.target;
+  let valid = true;
+  // campos que devemos validar
+  const fields = ['nome','sobrenome','email','telefone','cep','rua','cidade','numero'];
+  fields.forEach(name=>{
+    const input = form.querySelector(`[name="${name}"]`);
+    const err = document.getElementById('err' + name.charAt(0).toUpperCase() + name.slice(1));
+    if(!input || !input.value.trim()){
+      if(err) err.style.display = 'block';
+      valid = false;
+    } else {
+      if(err) err.style.display = 'none';
+    }
   });
-  if(!valid)return;
-  const msgLines=cart.map(i=>`${i.qty}x ${i.title} - ${fmt(i.price)}`).join('\n');
-  const total=fmt(cart.reduce((s,i)=>s+i.qty*i.price,0));
-  const dados=`Nome: ${f.nome.value} ${f.sobrenome.value}\nEmail: ${f.email.value}\nTel: ${f.telefone.value}\nEndereço: ${f.rua.value}, ${f.numero.value} - ${f.cidade.value}\nCEP: ${f.cep.value}`;
-  const msg=encodeURIComponent(`🛍️ Pedido Dondoca:\n${msgLines}\nTotal: ${total}\n\n${dados}`);
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,'_blank');
+  if(!valid){
+    // scroll para o topo do modal para mostrar erros
+    form.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  // montar mensagem
+  const itens = cart.map(i=>`${i.qty}x ${i.title} - ${fmt(i.price*i.qty)}`).join('\n');
+  const total = fmt(cart.reduce((s,i)=>s+i.qty*i.price,0));
+  const dados = `Nome: ${form.nome.value} ${form.sobrenome.value}\nEmail: ${form.email.value}\nTelefone: ${form.telefone.value}\nCEP: ${form.cep.value}\nRua: ${form.rua.value}\nNúmero: ${form.numero.value}\nCidade: ${form.cidade.value}`;
+  const msg = encodeURIComponent(`🛍️ Pedido Dondoca:\n${itens}\nTotal: ${total}\n\n${dados}`);
+  // abrir whatsapp
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
   closeCheckout();
-};
+});
+
+/* CATEGORIES nav */
+document.querySelectorAll('nav a').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
+    a.classList.add('active');
+    activeCategory = a.dataset.cat;
+    render();
+    window.scrollTo({top: document.querySelector('main').offsetTop - 60, behavior: 'smooth'});
+  });
+});
+
+/* show/hide checkout cancel */
+function closeCheckout(){ document.getElementById('checkoutModal').classList.remove('open'); }
+document.querySelectorAll('[onclick="closeCheckout()"]').forEach(x=>{}); // noop to avoid lint
+
+// Inicializa contador
+updateCartUI();
 </script>
 </body>
 </html>
