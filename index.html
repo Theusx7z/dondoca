@@ -176,52 +176,50 @@
     .modal-card{grid-template-columns:1fr;max-height:90vh}
     .gallery img{height:140px}
   }
-/* --- Correção final do carrossel centralizado --- */
-.carousel-container {
+
+  /* ===== CORREÇÃO DE CENTRALIZAÇÃO DO CARROSSEL ===== */
+.carousel {
   position: relative;
-  width: 100%;
-  max-width: 1920px;
-  margin: 0 auto;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #2c1104; /* opcional para preencher fundo */
-}
-
-.carousel-inner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  transition: transform 0.6s ease-in-out;
-}
-
-.carousel-item {
-  flex: 0 0 100%;
+  background: #000;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
-.carousel-item img {
+.carousel-track {
+  display: flex;
+  transition: transform 0.8s ease;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-slide {
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-slide img {
   width: 100%;
   max-width: 1920px;
-  height: 500px;
+  height: auto;
+  aspect-ratio: 1920 / 500;
   object-fit: cover;
   object-position: center;
   display: block;
-  margin: 0 auto;
 }
 
-/* Garante centralização mesmo se as imagens tiverem tamanhos diferentes */
 @media (max-width: 768px) {
-  .carousel-item img {
-    height: 260px;
+  .carousel-slide img {
+    aspect-ratio: 16 / 9;
+    height: auto;
   }
 }
-
 
 </style>
 </head>
@@ -336,9 +334,6 @@ const carouselTrack=document.getElementById('carouselTrack');
 let carouselIndex=0;
 const carouselLen = carouselTrack.children.length;
 setInterval(()=>{ carouselIndex=(carouselIndex+1)%carouselLen; carouselTrack.style.transform=`translateX(-${carouselIndex*100}%)`; },5000);
-
-  carouselInner.style.justifyContent = "center";
-carouselInner.style.alignItems = "center";
 
 /* === PRODUCTS (examples placeholders) === */
 const products = [
@@ -557,7 +552,6 @@ updateCartUI();
 </script>
 </body>
 </html>
-
 
 
 
