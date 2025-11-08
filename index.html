@@ -1,552 +1,363 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diva Semi Joias</title>
-  <style>
-    :root {
-      --primary: #c49a6c;
-      --bg: #f7f2ee;
-      --dark: #222;
-      --muted: #666;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--dark);
-    }
-
-    header {
-      background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-content {
-      max-width: 1200px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-      color: var(--primary);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--dark);
-      padding: 6px 12px;
-      border-radius: 8px;
-      transition: 0.3s;
-    }
-
-    nav a.active, nav a:hover {
-      background: var(--primary);
-      color: #fff;
-    }
-
-    .cart-area {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .cart-btn, .whats-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-    }
-
-    .whats-btn {
-      background: #25d366;
-    }
-
-    .hero img {
-      width: 100%;
-      height: auto;
-      max-height: 480px;
-      object-fit: cover;
-      display: block;
-    }
-
-    main {
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 0 15px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      cursor: pointer;
-    }
-
-    .card-body {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .card-title {
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-
-    .card-price {
-      color: var(--primary);
-      font-weight: bold;
-      margin-top: auto;
-    }
-
-    .btn {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      background: #fff;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .btn.primary {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* Carrinho */
-    #cart-drawer {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 360px;
-      height: 100%;
-      background: #fff;
-      box-shadow: -4px 0 12px rgba(0,0,0,0.2);
-      transform: translateX(110%);
-      transition: .3s;
-      z-index: 200;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #cart-drawer.open {
-      transform: translateX(0);
-    }
-
-    #cart-items {
-      flex: 1;
-      overflow: auto;
-      margin: 10px 0;
-    }
-
-    .cart-item {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .cart-item img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .cart-footer {
-      border-top: 1px solid #ddd;
-      padding-top: 10px;
-    }
-
-    /* Modal */
-    #modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 300;
-    }
-
-    #modal.open {
-      display: flex;
-    }
-
-    .modal-card {
-      background: #fff;
-      border-radius: 10px;
-      max-width: 800px;
-      width: 90%;
-      padding: 15px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .modal-gallery {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5px;
-    }
-
-    .modal-gallery img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .modal-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .modal-info h3 {
-      margin-bottom: 10px;
-    }
-
-    .modal-info p {
-      color: var(--muted);
-    }
-
-    .modal-info .price {
-      font-weight: bold;
-      color: var(--primary);
-      margin-top: 10px;
-    }
-
-    .modal-actions {
-      margin-top: 15px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    footer {
-      background: #fff;
-      margin-top: 40px;
-      padding: 40px 15px;
-      border-top: 1px solid #ddd;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: auto;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .footer-content img {
-      max-width: 320px;
-      width: 100%;
-      border-radius: 12px;
-    }
-
-    .footer-content p {
-      max-width: 600px;
-      color: var(--muted);
-    }
-
-    .footer-bottom {
-      margin-top: 20px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    /* RESPONSIVIDADE */
-    @media (max-width: 900px) {
-      nav ul {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .header-content {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .cart-area {
-        justify-content: center;
-      }
-
-      .modal-card {
-        grid-template-columns: 1fr;
-      }
-
-      .modal-gallery {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .modal-gallery img {
-        height: 140px;
-      }
-
-      .hero img {
-        max-height: 320px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .btn, .cart-btn, .whats-btn {
-        font-size: 12px;
-        padding: 6px 10px;
-      }
-
-      .card img {
-        height: 180px;
-      }
-
-      .hero img {
-        max-height: 240px;
-      }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Diva Semi Joias</title>
+<style>
+  :root{
+    --primary:#c49a6c;
+    --accent:#f7f2ee;
+    --dark:#2a2a2a;
+    --muted:#7a7a7a;
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Inter, Arial, sans-serif;margin:0;background:var(--accent);color:var(--dark);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  /* header */
+  header{background:var(--white);position:sticky;top:0;z-index:80;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  .header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .brand img{width:56px;height:56px;object-fit:cover;border-radius:10px}
+  .brand h1{margin:0;color:var(--primary);font-size:20px}
+  nav{flex:1;margin-left:24px}
+  nav ul{list-style:none;display:flex;gap:18px;align-items:center;justify-content:center;margin:0;padding:0}
+  nav a{display:inline-block;padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--dark);font-weight:600;transition:.15s}
+  nav a.active,nav a:hover{background:#fff;color:var(--primary);box-shadow:0 2px 6px rgba(0,0,0,.04)}
+  .header-actions{display:flex;gap:10px;align-items:center}
+  .btn{border:0;padding:8px 12px;border-radius:10px;cursor:pointer;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.04);font-weight:600}
+  .btn.primary{background:var(--primary);color:#fff}
+  .btn.whats{background:#25d366;color:#fff}
+  .badge{background:var(--primary);color:#fff;padding:4px 8px;border-radius:999px;font-weight:700;margin-left:8px}
+  /* banner */
+  .hero img{width:100%;height:auto;display:block;object-fit:cover;max-height:520px}
+  main{max-width:1200px;margin:28px auto;padding:0 16px}
+  .controls{display:flex;justify-content:flex-end;gap:12px;margin-bottom:14px}
+  .search input{padding:10px 14px;border-radius:999px;border:1px solid #eee;min-width:200px}
+  /* grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+  .card{background:var(--white);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 20px rgba(0,0,0,.04)}
+  .card img{width:100%;height:220px;object-fit:cover;cursor:pointer}
+  .card .body{padding:12px;display:flex;flex-direction:column;flex:1}
+  .title{font-weight:700;margin-bottom:6px}
+  .meta{font-size:13px;color:var(--muted)}
+  .price{margin-top:auto;font-weight:800;color:var(--primary)}
+  .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  /* drawer cart */
+  .drawer{position:fixed;right:0;top:0;height:100%;width:380px;max-width:95vw;background:var(--white);box-shadow:-30px 0 60px rgba(0,0,0,.12);transform:translateX(110%);transition:transform .24s;z-index:120;display:flex;flex-direction:column}
+  .drawer.open{transform:translateX(0)}
+  .drawer header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid #f3f3f3}
+  .drawer .content{padding:12px;overflow:auto;flex:1}
+  .cart-item{display:flex;gap:10px;margin-bottom:12px;align-items:center}
+  .cart-item img{width:64px;height:64px;object-fit:cover;border-radius:8px}
+  .drawer .footer{padding:12px;border-top:1px solid #f3f3f3}
+  .drawer .footer .total{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:800}
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:140;padding:20px}
+  .modal.open{display:flex}
+  .modal-card{background:var(--white);border-radius:12px;max-width:940px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px;overflow:auto}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .gallery img{width:100%;height:180px;object-fit:cover;border-radius:8px}
+  .modal-info h3{margin:0 0 8px}
+  .modal-info p{color:var(--muted)}
+  .modal-info .price{font-weight:800;color:var(--primary);margin-top:10px}
+  /* footer */
+  footer{background:var(--white);padding:36px 16px;margin-top:36px;border-top:1px solid #eee}
+  .footer-inner{max-width:1200px;margin:0 auto;display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+  .footer-banner{flex:1;min-width:260px;max-width:800px;border-radius:10px;object-fit:cover}
+  .footer-col{flex:1;min-width:220px}
+  .footer-col h4{margin-bottom:8px}
+  .footer-bottom{text-align:center;color:var(--muted);margin-top:18px}
+  /* responsive */
+  @media (max-width:1000px){
+    nav ul{gap:12px}
+    .header-inner{padding:12px}
+    .drawer{width:340px}
+  }
+  @media (max-width:800px){
+    .header-inner{gap:8px}
+    nav{order:3;width:100%}
+    nav ul{justify-content:center;flex-wrap:wrap}
+    .brand{order:1}
+    .header-actions{order:2}
+    .modal-card{grid-template-columns:1fr}
+    .gallery img{height:140px}
+    .card img{height:200px}
+  }
+  @media (max-width:480px){
+    .search input{min-width:120px}
+    .card img{height:160px}
+    .gallery img{height:120px}
+    .drawer{width:100%}
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="header-content">
-      <div class="logo">Diva Semi Joias</div>
-      <nav>
-        <ul>
-          <li><a href="#" class="active" data-cat="aneis">Anéis</a></li>
-          <li><a href="#" data-cat="brincos">Brincos</a></li>
-          <li><a href="#" data-cat="pulseiras">Pulseiras</a></li>
-          <li><a href="#" data-cat="colares">Colares</a></li>
-          <li><a href="#" data-cat="correntes">Correntes</a></li>
-        </ul>
-      </nav>
-      <div class="cart-area">
-        <button class="whats-btn" id="whats-btn">💬 WhatsApp</button>
-        <button class="cart-btn" id="open-cart">🛒 Carrinho (<span id="cart-count">0</span>)</button>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <img src="https://via.placeholder.com/80x80?text=Logo" alt="logo">
+      <div>
+        <h1>Diva Semi Joias</h1>
+        <div style="font-size:12px;color:var(--muted)">Semi Joias</div>
       </div>
+    </div>
+
+    <nav aria-label="Categorias">
+      <ul>
+        <li><a href="#" data-cat="aneis" class="active">Anéis</a></li>
+        <li><a href="#" data-cat="brincos">Brincos</a></li>
+        <li><a href="#" data-cat="pulseiras">Pulseiras</a></li>
+        <li><a href="#" data-cat="colares">Colares</a></li>
+        <li><a href="#" data-cat="correntes">Correntes</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn whats" id="whatsBtn">💬 WhatsApp</button>
+      <button class="btn" id="openCartBtn">🛒 Carrinho <span id="cartCount" class="badge" style="display:none">0</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- banner (1920x500 recommended) -->
+<section class="hero">
+  <img src="https://via.placeholder.com/1920x500/4b2b20/dbc189?text=DONDOCA+SEMI+JOIAS+-+BANNER+1920x500" alt="Banner">
+</section>
+
+<main>
+  <div class="controls">
+    <div class="search"><input id="searchInput" placeholder="Buscar produto..." /></div>
+  </div>
+
+  <section id="productsGrid" class="grid" aria-live="polite"></section>
+  <div id="noProducts" style="display:none;text-align:center;color:var(--muted);padding:28px">Nenhum produto encontrado.</div>
+</main>
+
+<!-- cart drawer -->
+<aside class="drawer" id="cartDrawer" aria-hidden="true">
+  <header>
+    <strong>Carrinho</strong>
+    <div>
+      <button class="btn" id="closeCartBtn">Fechar</button>
     </div>
   </header>
 
-  <section class="hero">
-    <img src="dondoca-banner.png" alt="Banner principal da loja Diva Semi Joias">
-  </section>
+  <div class="content" id="cartContent">
+    <!-- items -->
+  </div>
 
-  <main>
-    <div id="products" class="grid"></div>
-  </main>
-
-  <footer>
-    <div class="footer-content">
-      <img src="dondoca-banner.png" alt="Banner da loja">
-      <p>A Diva Semi Joias é uma loja especializada em peças de alta qualidade, trazendo brilho, elegância e exclusividade para cada cliente. Trabalhamos com anéis, brincos, pulseiras, colares e correntes cuidadosamente selecionados.</p>
-      <p><strong>E-mail:</strong> contato@divasemiijoias.com.br</p>
-      <div class="footer-bottom">© 2025 Diva Semi Joias | <a href="#" style="color:var(--primary)">Política de Privacidade</a></div>
+  <div class="footer">
+    <div class="total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" id="clearCartBtn">Limpar</button>
+      <button class="btn primary" id="checkoutBtn">Confirmar pelo WhatsApp</button>
     </div>
-  </footer>
+  </div>
+</aside>
 
-  <script>
-    const WHATSAPP_NUMBER = "5511999999999";
+<!-- modal product -->
+<div class="modal" id="productModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-card">
+    <div class="gallery" id="modalGallery"></div>
+    <div class="modal-info">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <div class="price" id="modalPrice"></div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button class="btn primary" id="modalAddBtn">Adicionar ao Carrinho</button>
+        <button class="btn" id="modalCloseBtn">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    document.getElementById('whats-btn').onclick = () => {
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Olá! Vim do site Diva Semi Joias.`, '_blank');
-    };
+<footer>
+  <div class="footer-inner">
+    <img class="footer-banner" src="https://via.placeholder.com/1200x300/4b2b20/dbc189?text=Banner+Rodape+1200x300" alt="Banner rodapé">
+    <div class="footer-col">
+      <h4>Sobre a Diva</h4>
+      <p style="color:var(--muted)">Diva Semi Joias oferece peças selecionadas para todas as ocasiões. Atendimento e confirmação via WhatsApp. Troca e devolução conforme política.</p>
+      <p style="margin-top:6px"><strong>E-mail:</strong> contato@divasemijoias.com.br</p>
+    </div>
+    <div class="footer-col">
+      <h4>Informações</h4>
+      <p><a href="#" style="color:var(--primary)">Política de Privacidade</a></p>
+      <p><a href="#" style="color:var(--primary)">Termos & Condições</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 Diva Semi Joias — Todos os direitos reservados</div>
+</footer>
 
-    const categories = ['aneis','brincos','pulseiras','colares','correntes'];
-    const products = [];
-    function rand(min,max){return +(Math.random()*(max-min)+min).toFixed(2);}
-    categories.forEach(cat=>{
-      for(let i=1;i<=50;i++){
-        products.push({
-          id:`${cat}_${i}`,
-          category:cat,
-          title:`${cat.charAt(0).toUpperCase()+cat.slice(1)} ${i}`,
-          price:rand(29,199),
-          images:[
-            `https://via.placeholder.com/800x800?text=${cat}+${i}+1`,
-            `https://via.placeholder.com/800x800?text=${cat}+${i}+2`,
-            `https://via.placeholder.com/800x800?text=${cat}+${i}+3`,
-            `https://via.placeholder.com/800x800?text=${cat}+${i}+4`
-          ],
-          desc:`Descrição do produto ${i} da categoria ${cat}.`
-        });
-      }
+<script>
+/* ========== CONFIG ========== */
+/* coloque seu número no formato internacional sem '+' ex: 5511999999999 */
+const WHATSAPP_NUMBER = ''; // <-- coloque seu número aqui
+
+/* ========== GERAÇÃO PRODUTOS ========== */
+const categories = ['aneis','brincos','pulseiras','colares','correntes'];
+const products = [];
+function randPrice(min,max){ return +(Math.random()*(max-min)+min).toFixed(2); }
+categories.forEach(cat=>{
+  for(let i=1;i<=50;i++){
+    const id = `${cat}_${i}`;
+    products.push({
+      id,
+      category: cat,
+      title: `${cat.charAt(0).toUpperCase()+cat.slice(1)} ${i}`,
+      price: randPrice(29,249),
+      images: [
+        `https://via.placeholder.com/800x800?text=${encodeURIComponent(cat+'+'+i+'+1')}`,
+        `https://via.placeholder.com/800x800?text=${encodeURIComponent(cat+'+'+i+'+2')}`,
+        `https://via.placeholder.com/800x800?text=${encodeURIComponent(cat+'+'+i+'+3')}`,
+        `https://via.placeholder.com/800x800?text=${encodeURIComponent(cat+'+'+i+'+4')}`
+      ],
+      description: `Descrição do produto ${i} da categoria ${cat}. Material banhado com ótimo acabamento.`
     });
+  }
+});
 
-    let active = 'aneis';
-    let cart = JSON.parse(localStorage.getItem('diva_cart')||'[]');
-    const fmt = v=>'R$ '+v.toFixed(2).replace('.',',');
+/* ========== ESTADO ========== */
+let activeCategory = 'aneis'; // abre em anéis
+let cart = JSON.parse(localStorage.getItem('diva_cart') || '[]');
 
-    function renderProducts(){
-      const grid=document.getElementById('products');
-      grid.innerHTML='';
-      const list=products.filter(p=>p.category===active);
-      list.forEach(p=>{
-        const el=document.createElement('div');
-        el.className='card';
-        el.innerHTML=`
-          <img src="${p.images[0]}" alt="${p.title}" onclick="openModal('${p.id}')">
-          <div class="card-body">
-            <div class="card-title">${p.title}</div>
-            <div class="card-price">${fmt(p.price)}</div>
-            <div class="actions">
-              <button class="btn" onclick="openModal('${p.id}')">Ver</button>
-              <button class="btn primary" onclick="addToCart('${p.id}')">Adicionar</button>
-            </div>
-          </div>`;
-        grid.appendChild(el);
-      });
-    }
+/* ========== HELPERS ========== */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+const fmt = v => 'R$ ' + v.toFixed(2).replace('.',',');
 
-    const modal=document.getElementById('modal');
-    const modalGallery=document.getElementById('modal-gallery');
-    const modalTitle=document.getElementById('modal-title');
-    const modalDesc=document.getElementById('modal-desc');
-    const modalPrice=document.getElementById('modal-price');
-    function openModal(id){
-      const p=products.find(x=>x.id===id);
-      modalGallery.innerHTML='';
-      p.images.forEach(src=>{
-        const img=document.createElement('img');
-        img.src=src;
-        modalGallery.appendChild(img);
-      });
-      modalTitle.textContent=p.title;
-      modalDesc.textContent=p.desc;
-      modalPrice.textContent=fmt(p.price);
-      modal.classList.add('open');
-      document.getElementById('modal-add').onclick=()=>{addToCart(id);modal.classList.remove('open');};
-    }
+/* ========== RENDER PRODUTOS ========== */
+function renderProducts(){
+  const grid = $('#productsGrid');
+  grid.innerHTML = '';
+  const term = $('#searchInput').value.trim().toLowerCase();
+  const list = products.filter(p => p.category === activeCategory && (p.title.toLowerCase().includes(term) || p.description.toLowerCase().includes(term)));
+  if(list.length === 0){ $('#noProducts').style.display = 'block'; } else { $('#noProducts').style.display = 'none'; }
+  list.forEach(p=>{
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <img loading="lazy" src="${p.images[0]}" alt="${p.title}" onclick="openModal('${p.id}')">
+      <div class="body card-body">
+        <div class="title">${p.title}</div>
+        <div class="meta">Categoria: ${p.category}</div>
+        <div class="price">${fmt(p.price)}</div>
+        <div class="actions">
+          <button class="btn" onclick="openModal('${p.id}')">Ver</button>
+          <button class="btn primary" onclick="addToCart('${p.id}')">Adicionar</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
 
-    document.getElementById('modal-close').onclick=()=>modal.classList.remove('open');
-    modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open');};
+/* ========== MODAL ========== */
+function openModal(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const gallery = $('#modalGallery'); gallery.innerHTML = '';
+  p.images.forEach(src=>{
+    const img = document.createElement('img'); img.src = src; img.alt = p.title;
+    gallery.appendChild(img);
+  });
+  $('#modalTitle').textContent = p.title;
+  $('#modalDesc').textContent = p.description;
+  $('#modalPrice').textContent = fmt(p.price);
+  $('#productModal').classList.add('open');
+  $('#productModal').setAttribute('aria-hidden','false');
+  $('#modalAddBtn').onclick = () => { addToCart(id); closeModal(); };
+}
+function closeModal(){ $('#productModal').classList.remove('open'); $('#productModal').setAttribute('aria-hidden','true'); }
 
-    const drawer=document.getElementById('cart-drawer');
-    function openCart(){drawer.classList.add('open');}
-    function closeCart(){drawer.classList.remove('open');}
-    document.getElementById('open-cart').onclick=openCart;
-    document.getElementById('close-cart').onclick=closeCart;
-    document.getElementById('clear-cart').onclick=()=>{if(confirm('Limpar carrinho?')){cart=[];saveCart();renderCart();}};
-    document.getElementById('checkout').onclick=checkout;
-
-    function addToCart(id){
-      const p=products.find(x=>x.id===id);
-      const existing=cart.find(i=>i.id===id);
-      if(existing) existing.qty++; else cart.push({id:p.id,title:p.title,price:p.price,qty:1,img:p.images[0]});
-      saveCart();renderCart();openCart();
-    }
-
-    function changeQty(id,delta){
-      const item=cart.find(x=>x.id===id);
-      if(!item)return;
-      item.qty+=delta;
-      if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
-      saveCart();renderCart();
-    }
-
-    function saveCart(){localStorage.setItem('diva_cart',JSON.stringify(cart));}
-
-    function renderCart(){
-      const ctn=document.getElementById('cart-items');
-      const count=document.getElementById('cart-count');
-      ctn.innerHTML='';
-      let total=0;let qty=0;
-      cart.forEach(i=>{
-        total+=i.price*i.qty;qty+=i.qty;
-        const div=document.createElement('div');
-        div.className='cart-item';
-        div.innerHTML=`
-          <img src="${i.img}">
-          <div style="flex:1">
-            <div><strong>${i.title}</strong></div>
-            <div>${fmt(i.price)} x ${i.qty}</div>
-            <div style="margin-top:5px;display:flex;gap:5px;">
-              <button class="btn" onclick="changeQty('${i.id}',-1)">-</button>
-              <button class="btn" onclick="changeQty('${i.id}',1)">+</button>
-              <button class="btn" onclick="removeItem('${i.id}')">Remover</button>
-            </div>
-          </div>`;
-        ctn.appendChild(div);
-      });
-      count.textContent=qty;
-      document.getElementById('cart-total').textContent=fmt(total);
-    }
-
-    function removeItem(id){cart=cart.filter(x=>x.id!==id);saveCart();renderCart();}
-    function checkout(){
-      if(cart.length===0)return alert('Carrinho vazio');
-      const msg=encodeURIComponent(cart.map(i=>`${i.qty}x ${i.title} - R$ ${i.price.toFixed(2).replace('.',',')}`).join('\n')+`\nTotal: R$ ${cart.reduce((s,i)=>s+i.price*i.qty,0).toFixed(2).replace('.',',')}`);
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,'_blank');
-    }
-
-    document.querySelectorAll('nav a').forEach(a=>{
-      a.onclick=e=>{
-        e.preventDefault();
-        document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
-        a.classList.add('active');
-        active=a.dataset.cat;
-        renderProducts();
-      };
+/* ========== CART ========== */
+function saveCart(){ localStorage.setItem('diva_cart', JSON.stringify(cart)); }
+function updateCartUI(){
+  const container = $('#cartContent'); container.innerHTML = '';
+  let total = 0, count = 0;
+  if(cart.length === 0){
+    container.innerHTML = '<div style="color:var(--muted);padding:18px">Seu carrinho está vazio.</div>';
+  } else {
+    cart.forEach(item=>{
+      total += item.price * item.qty; count += item.qty;
+      const div = document.createElement('div'); div.className = 'cart-item';
+      div.innerHTML = `
+        <img src="${item.img}" alt="${item.title}">
+        <div style="flex:1">
+          <div style="font-weight:700">${item.title}</div>
+          <div style="color:var(--muted)">${fmt(item.price)} x ${item.qty}</div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <button class="btn" onclick="changeQty('${item.id}',-1)">-</button>
+            <button class="btn" onclick="changeQty('${item.id}',1)">+</button>
+            <button class="btn" onclick="removeFromCart('${item.id}')">Remover</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
     });
+  }
+  $('#cartTotal').textContent = fmt(total);
+  if(count>0){ $('#cartCount').style.display = 'inline-block'; $('#cartCount').textContent = count; } else { $('#cartCount').style.display = 'none'; }
+}
+function addToCart(id){
+  const p = products.find(x=>x.id===id); if(!p) return;
+  const existing = cart.find(i=>i.id===id);
+  if(existing) existing.qty += 1; else cart.push({ id:p.id, title:p.title, price:p.price, qty:1, img:p.images[0] });
+  saveCart(); updateCartUI(); openCart();
+}
+function changeQty(id,delta){
+  const it = cart.find(x=>x.id===id); if(!it) return;
+  it.qty += delta; if(it.qty <= 0) cart = cart.filter(x=>x.id!==id);
+  saveCart(); updateCartUI();
+}
+function removeFromCart(id){ cart = cart.filter(x=>x.id!==id); saveCart(); updateCartUI(); }
+function clearCart(){ if(!confirm('Limpar carrinho?')) return; cart = []; saveCart(); updateCartUI(); }
 
+/* ========== DRAWER ========== */
+function openCart(){ $('#cartDrawer').classList.add('open'); $('#cartDrawer').setAttribute('aria-hidden','false'); }
+function closeCart(){ $('#cartDrawer').classList.remove('open'); $('#cartDrawer').setAttribute('aria-hidden','true'); }
+
+/* ========== CHECKOUT WHATSAPP ========== */
+function checkout(){
+  if(cart.length === 0) return alert('Carrinho vazio');
+  if(!WHATSAPP_NUMBER) return alert('Número do WhatsApp não configurado. Edite WHATSAPP_NUMBER no script.');
+  const lines = cart.map(i => `${i.qty}x ${i.title} - R$ ${i.price.toFixed(2).replace('.',',')}`);
+  const total = cart.reduce((s,i)=>s + i.price * i.qty, 0).toFixed(2).replace('.',',');
+  const msg = encodeURIComponent(`Olá! Gostaria de confirmar meu pedido:\n${lines.join('\n')}\nTotal: R$ ${total}`);
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+}
+
+/* ========== EVENTS ========== */
+$('#openCartBtn').addEventListener('click', openCart);
+$('#closeCartBtn').addEventListener('click', closeCart);
+$('#clearCartBtn').addEventListener('click', clearCart);
+$('#checkoutBtn').addEventListener('click', checkout);
+$('#modalCloseBtn').addEventListener('click', closeModal);
+$('#productModal').addEventListener('click', e => { if(e.target === $('#productModal')) closeModal(); });
+$('#whatsBtn').addEventListener('click', ()=> {
+  if(!WHATSAPP_NUMBER) return alert('Número do WhatsApp não configurado.');
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}`, '_blank');
+});
+$('#searchInput').addEventListener('input', ()=> renderProducts());
+
+/* menu category clicks */
+$$('nav a').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    $$('nav a').forEach(x=>x.classList.remove('active'));
+    a.classList.add('active');
+    activeCategory = a.dataset.cat;
     renderProducts();
-    renderCart();
-  </script>
+    window.scrollTo({top: document.querySelector('main').offsetTop - 80, behavior: 'smooth'});
+  });
+});
+
+/* init */
+renderProducts();
+updateCartUI();
+</script>
+
 </body>
 </html>
