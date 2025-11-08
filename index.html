@@ -5,56 +5,363 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Diva Semi Joias</title>
   <style>
-    :root{--primary:#c49a6c;--bg:#f7f2ee;--dark:#222;--muted:#666;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:Arial, sans-serif;background:var(--bg);color:var(--dark);}
-    header{background:#fff;box-shadow:0 2px 5px rgba(0,0,0,0.1);position:sticky;top:0;z-index:100;}
-    .header-content{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:15px;}
-    .logo{font-size:22px;font-weight:bold;color:var(--primary);}
-    nav ul{list-style:none;display:flex;gap:20px;}
-    nav a{text-decoration:none;color:var(--dark);padding:6px 12px;border-radius:8px;}
-    nav a.active,nav a:hover{background:var(--primary);color:#fff;}
-    .cart-area{display:flex;align-items:center;gap:10px;}
-    .cart-btn,.whats-btn{background:var(--primary);color:#fff;border:none;padding:8px 15px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;}
-    .whats-btn{background:#25d366;}
-    .hero img{width:100%;height:auto;max-height:480px;object-fit:cover;display:block;}
-    main{max-width:1200px;margin:30px auto;padding:0 15px;}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;}
-    .card{background:#fff;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,0.05);overflow:hidden;display:flex;flex-direction:column;}
-    .card img{width:100%;height:220px;object-fit:cover;cursor:pointer;}
-    .card-body{padding:12px;display:flex;flex-direction:column;flex:1;}
-    .card-title{font-weight:bold;margin-bottom:6px;}
-    .card-price{color:var(--primary);font-weight:bold;margin-top:auto;}
-    .btn{padding:6px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer;}
-    .btn.primary{background:var(--primary);color:#fff;border:none;}
-    .actions{display:flex;gap:8px;margin-top:10px;}
-    /* Carrinho */
-    #cart-drawer{position:fixed;top:0;right:0;width:360px;height:100%;background:#fff;box-shadow:-4px 0 12px rgba(0,0,0,0.2);transform:translateX(110%);transition:.3s;z-index:200;padding:15px;display:flex;flex-direction:column;}
-    #cart-drawer.open{transform:translateX(0);}
-    #cart-items{flex:1;overflow:auto;margin:10px 0;}
-    .cart-item{display:flex;gap:10px;margin-bottom:10px;}
-    .cart-item img{width:60px;height:60px;object-fit:cover;border-radius:8px;}
-    .cart-footer{border-top:1px solid #ddd;padding-top:10px;}
-    /* Modal */
-    #modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:300;}
-    #modal.open{display:flex;}
-    .modal-card{background:#fff;border-radius:10px;max-width:800px;width:90%;padding:15px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .modal-gallery{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
-    .modal-gallery img{width:100%;height:180px;object-fit:cover;border-radius:8px;}
-    .modal-info{display:flex;flex-direction:column;}
-    .modal-info h3{margin-bottom:10px;}
-    .modal-info p{color:var(--muted);}
-    .modal-info .price{font-weight:bold;color:var(--primary);margin-top:10px;}
-    .modal-actions{margin-top:15px;display:flex;gap:10px;}
-    @media(max-width:768px){
-      .modal-card{grid-template-columns:1fr;}
-      .modal-gallery img{height:140px;}
+    :root {
+      --primary: #c49a6c;
+      --bg: #f7f2ee;
+      --dark: #222;
+      --muted: #666;
     }
-    footer{background:#fff;margin-top:40px;padding:40px 15px;border-top:1px solid #ddd;}
-    .footer-content{max-width:1200px;margin:auto;text-align:center;display:flex;flex-direction:column;align-items:center;gap:15px;}
-    .footer-content img{max-width:300px;border-radius:12px;}
-    .footer-content p{max-width:600px;color:var(--muted);}
-    .footer-bottom{margin-top:20px;font-size:14px;color:var(--muted);}
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+    }
+
+    header {
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--dark);
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    nav a.active, nav a:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .cart-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cart-btn, .whats-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    .whats-btn {
+      background: #25d366;
+    }
+
+    .hero img {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: cover;
+      display: block;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .card-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-title {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .card-price {
+      color: var(--primary);
+      font-weight: bold;
+      margin-top: auto;
+    }
+
+    .btn {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Carrinho */
+    #cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 360px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -4px 0 12px rgba(0,0,0,0.2);
+      transform: translateX(110%);
+      transition: .3s;
+      z-index: 200;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    #cart-items {
+      flex: 1;
+      overflow: auto;
+      margin: 10px 0;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-footer {
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+
+    /* Modal */
+    #modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+    }
+
+    #modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: 10px;
+      max-width: 800px;
+      width: 90%;
+      padding: 15px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .modal-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+    }
+
+    .modal-gallery img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .modal-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-info h3 {
+      margin-bottom: 10px;
+    }
+
+    .modal-info p {
+      color: var(--muted);
+    }
+
+    .modal-info .price {
+      font-weight: bold;
+      color: var(--primary);
+      margin-top: 10px;
+    }
+
+    .modal-actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      background: #fff;
+      margin-top: 40px;
+      padding: 40px 15px;
+      border-top: 1px solid #ddd;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .footer-content img {
+      max-width: 320px;
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    .footer-content p {
+      max-width: 600px;
+      color: var(--muted);
+    }
+
+    .footer-bottom {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 900px) {
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .cart-area {
+        justify-content: center;
+      }
+
+      .modal-card {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .modal-gallery img {
+        height: 140px;
+      }
+
+      .hero img {
+        max-height: 320px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .btn, .cart-btn, .whats-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .card img {
+        height: 180px;
+      }
+
+      .hero img {
+        max-height: 240px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -77,46 +384,17 @@
     </div>
   </header>
 
-  <!-- IMAGEM NO TOPO -->
   <section class="hero">
-    <img src="dondoca.png" alt="Banner principal da loja Diva Semi Joias">
+    <img src="dondoca-banner.png" alt="Banner principal da loja Diva Semi Joias">
   </section>
 
   <main>
     <div id="products" class="grid"></div>
   </main>
 
-  <aside id="cart-drawer">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <strong>Seu Carrinho</strong>
-      <button class="btn" id="close-cart">Fechar</button>
-    </div>
-    <div id="cart-items"></div>
-    <div class="cart-footer">
-      <div>Total: <span id="cart-total">R$ 0,00</span></div>
-      <button class="btn" id="clear-cart">Limpar</button>
-      <button class="btn primary" id="checkout">Finalizar no WhatsApp</button>
-    </div>
-  </aside>
-
-  <div id="modal">
-    <div class="modal-card">
-      <div class="modal-gallery" id="modal-gallery"></div>
-      <div class="modal-info">
-        <h3 id="modal-title"></h3>
-        <p id="modal-desc"></p>
-        <div class="price" id="modal-price"></div>
-        <div class="modal-actions">
-          <button class="btn primary" id="modal-add">Adicionar ao Carrinho</button>
-          <button class="btn" id="modal-close">Fechar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <footer>
     <div class="footer-content">
-      <img src="dondoca.png" alt="Banner da loja">
+      <img src="dondoca-banner.png" alt="Banner da loja">
       <p>A Diva Semi Joias é uma loja especializada em peças de alta qualidade, trazendo brilho, elegância e exclusividade para cada cliente. Trabalhamos com anéis, brincos, pulseiras, colares e correntes cuidadosamente selecionados.</p>
       <p><strong>E-mail:</strong> contato@divasemiijoias.com.br</p>
       <div class="footer-bottom">© 2025 Diva Semi Joias | <a href="#" style="color:var(--primary)">Política de Privacidade</a></div>
@@ -124,7 +402,7 @@
   </footer>
 
   <script>
-    const WHATSAPP_NUMBER = "5511999999999"; // coloque seu número aqui
+    const WHATSAPP_NUMBER = "5511999999999";
 
     document.getElementById('whats-btn').onclick = () => {
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Olá! Vim do site Diva Semi Joias.`, '_blank');
@@ -176,7 +454,6 @@
       });
     }
 
-    // Modal
     const modal=document.getElementById('modal');
     const modalGallery=document.getElementById('modal-gallery');
     const modalTitle=document.getElementById('modal-title');
@@ -196,10 +473,10 @@
       modal.classList.add('open');
       document.getElementById('modal-add').onclick=()=>{addToCart(id);modal.classList.remove('open');};
     }
+
     document.getElementById('modal-close').onclick=()=>modal.classList.remove('open');
     modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open');};
 
-    // Carrinho
     const drawer=document.getElementById('cart-drawer');
     function openCart(){drawer.classList.add('open');}
     function closeCart(){drawer.classList.remove('open');}
@@ -214,6 +491,7 @@
       if(existing) existing.qty++; else cart.push({id:p.id,title:p.title,price:p.price,qty:1,img:p.images[0]});
       saveCart();renderCart();openCart();
     }
+
     function changeQty(id,delta){
       const item=cart.find(x=>x.id===id);
       if(!item)return;
@@ -221,7 +499,9 @@
       if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
       saveCart();renderCart();
     }
+
     function saveCart(){localStorage.setItem('diva_cart',JSON.stringify(cart));}
+
     function renderCart(){
       const ctn=document.getElementById('cart-items');
       const count=document.getElementById('cart-count');
@@ -247,6 +527,7 @@
       count.textContent=qty;
       document.getElementById('cart-total').textContent=fmt(total);
     }
+
     function removeItem(id){cart=cart.filter(x=>x.id!==id);saveCart();renderCart();}
     function checkout(){
       if(cart.length===0)return alert('Carrinho vazio');
@@ -254,7 +535,6 @@
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,'_blank');
     }
 
-    // Menu
     document.querySelectorAll('nav a').forEach(a=>{
       a.onclick=e=>{
         e.preventDefault();
@@ -270,6 +550,3 @@
   </script>
 </body>
 </html>
-
-
-
