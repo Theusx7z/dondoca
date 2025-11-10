@@ -55,6 +55,132 @@
     .footer-content img{max-width:300px;border-radius:12px;}
     .footer-content p{max-width:600px;color:var(--muted);}
     .footer-bottom{margin-top:20px;font-size:14px;color:var(--muted);}
+
+/* ===============================
+   🔹 RESPONSIVIDADE GERAL
+   =============================== */
+
+/* --- Tablets (até 1024px) --- */
+@media (max-width: 1024px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 0 15px;
+  }
+
+  .banner {
+    height: 250px;
+  }
+}
+
+/* --- Celulares (até 768px) --- */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  nav a {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .banner {
+    height: 200px;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 0 20px;
+  }
+
+  .product-card {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .whatsapp-btn,
+  .cart-btn {
+    position: fixed;
+    bottom: 20px;
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .whatsapp-btn {
+    left: 10px;
+  }
+
+  .cart-btn {
+    right: 10px;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 14px;
+    padding: 15px 10px;
+  }
+}
+
+/* --- Celulares muito pequenos (até 480px) --- */
+@media (max-width: 480px) {
+  .banner {
+    height: 150px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .product-card h2 {
+    font-size: 16px;
+  }
+
+  .product-card p {
+    font-size: 14px;
+  }
+
+  .price {
+    font-size: 16px;
+  }
+
+  .product-card button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
+
+    
   </style>
 </head>
 <body>
@@ -349,6 +475,7 @@
   </script>
 </body>
 </html>
+
 
 
 
