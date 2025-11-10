@@ -180,27 +180,102 @@
   }
 }
 
+/* ==========================
+   🔹 MENU HAMBÚRGUER
+   ========================== */
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--dark);
+}
+
+.menu ul {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.menu a {
+  text-decoration: none;
+  color: var(--dark);
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: var(--primary);
+}
+
+/* --- Responsivo: ativa o hamburguer --- */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .menu {
+    display: none;
+    flex-direction: column;
+    background: var(--accent);
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 10;
+  }
+
+  .menu.active {
+    display: flex;
+  }
+
+  .menu ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .menu a {
+    font-size: 18px;
+    color: var(--dark);
+  }
+}
+
     
   </style>
 </head>
 <body>
   <header>
-    <div class="header-content">
-      <div class="logo">Diva Semi Joias</div>
-      <nav>
-        <ul>
-          <li><a href="#" class="active" data-cat="aneis">Anéis</a></li>
-          <li><a href="#" data-cat="brincos">Brincos</a></li>
-          <li><a href="#" data-cat="pulseiras">Pulseiras</a></li>
-          <li><a href="#" data-cat="colares">Colares</a></li>
-          <li><a href="#" data-cat="correntes">Correntes</a></li>
-        </ul>
-      </nav>
-      <div class="cart-area">
-        <button class="whats-btn" id="whats-btn">💬 WhatsApp</button>
-        <button class="cart-btn" id="open-cart">🛒 Carrinho (<span id="cart-count">0</span>)</button>
-      </div>
-    </div>
+   <header>
+  <div class="menu-container">
+    <button class="menu-toggle" aria-label="Abrir menu">&#9776;</button>
+    <h1>Diva Semi Joias</h1>
+  </div>
+
+  <nav class="menu">
+    <ul>
+      <li><a href="#">Anéis</a></li>
+      <li><a href="#">Brincos</a></li>
+      <li><a href="#">Pulseiras</a></li>
+      <li><a href="#">Colares</a></li>
+      <li><a href="#">Correntes</a></li>
+    </ul>
+  </nav>
+</header>
+
   </header>
 
   <!-- IMAGEM NO TOPO -->
@@ -472,9 +547,19 @@
 
     renderProducts();
     renderCart();
+
+    // === Menu Hambúrguer ===
+const menuToggle = document.querySelector(".menu-toggle");
+const menu = document.querySelector(".menu");
+
+menuToggle.addEventListener("click", () => {
+  menu.classList.toggle("active");
+});
+
   </script>
 </body>
 </html>
+
 
 
 
